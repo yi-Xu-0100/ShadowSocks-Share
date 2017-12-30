@@ -1,4 +1,4 @@
-package com.example.ShadowSocksShare.controller;
+package com.example.ShadowSocksShare.web;
 
 import com.example.ShadowSocksShare.BaseTest;
 import lombok.extern.slf4j.Slf4j;

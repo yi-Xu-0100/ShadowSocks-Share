@@ -1,6 +1,6 @@
 package com.example.ShadowSocksShare.service.impl;
 
-import com.example.ShadowSocksShare.entity.ShadowSocksDetailsEntity;
+import com.example.ShadowSocksShare.domain.ShadowSocksDetailsEntity;
 import com.example.ShadowSocksShare.service.ShadowSocksCrawlerService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

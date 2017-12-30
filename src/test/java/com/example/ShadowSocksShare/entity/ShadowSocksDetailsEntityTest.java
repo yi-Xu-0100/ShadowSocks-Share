@@ -1,5 +1,6 @@
 package com.example.ShadowSocksShare.entity;
 
+import com.example.ShadowSocksShare.domain.ShadowSocksDetailsEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 

@@ -1,7 +1,7 @@
 package com.example.ShadowSocksShare.service;
 
 
-import com.example.ShadowSocksShare.entity.ShadowSocksEntity;
+import com.example.ShadowSocksShare.domain.ShadowSocksEntity;
 import com.google.zxing.WriterException;
 import org.springframework.data.domain.Pageable;
 

@@ -1,16 +1,21 @@
-package com.example.ShadowSocksShare.controller;
+package com.example.ShadowSocksShare.web;
 
 
-import com.example.ShadowSocksShare.entity.ShadowSocksDetailsEntity;
-import com.example.ShadowSocksShare.entity.ShadowSocksEntity;
+import com.example.ShadowSocksShare.domain.ShadowSocksDetailsEntity;
+import com.example.ShadowSocksShare.domain.ShadowSocksEntity;
 import com.example.ShadowSocksShare.service.ShadowSocksSerivce;
 import com.google.zxing.WriterException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.ErrorPage;
+import org.springframework.boot.web.servlet.ErrorPageRegistrar;
+import org.springframework.boot.web.servlet.ErrorPageRegistry;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -65,5 +70,20 @@ public class MainController {
 	@ResponseBody
 	public ResponseEntity<byte[]> createQRCode(String text, int width, int height) throws IOException, WriterException {
 		return ResponseEntity.ok().contentType(MediaType.parseMediaType(MediaType.IMAGE_PNG_VALUE)).body(shadowSocksSerivceImpl.createQRCodeImage(text, width, height));
+	}
+
+
+	@Bean
+	public ErrorPageRegistrar errorPageRegistrar(){
+		return new MyErrorPageRegistrar();
+	}
+
+	private static class MyErrorPageRegistrar implements ErrorPageRegistrar {
+
+		@Override
+		public void registerErrorPages(ErrorPageRegistry registry) {
+			registry.addErrorPages(new ErrorPage(HttpStatus.BAD_REQUEST, "/400"));
+		}
+
 	}
 }

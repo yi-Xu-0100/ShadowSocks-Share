@@ -1,9 +1,9 @@
 package com.example.ShadowSocksShare.service.impl;
 
-import com.example.ShadowSocksShare.dao.ShadowSocksDetailsRepository;
-import com.example.ShadowSocksShare.dao.ShadowSocksRepository;
-import com.example.ShadowSocksShare.entity.ShadowSocksDetailsEntity;
-import com.example.ShadowSocksShare.entity.ShadowSocksEntity;
+import com.example.ShadowSocksShare.domain.ShadowSocksDetailsRepository;
+import com.example.ShadowSocksShare.domain.ShadowSocksRepository;
+import com.example.ShadowSocksShare.domain.ShadowSocksDetailsEntity;
+import com.example.ShadowSocksShare.domain.ShadowSocksEntity;
 import com.example.ShadowSocksShare.service.ShadowSocksCrawlerService;
 import com.example.ShadowSocksShare.service.ShadowSocksSerivce;
 import com.google.zxing.BarcodeFormat;

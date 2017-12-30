@@ -1,7 +1,10 @@
 # ========== 自定义 ==========
 
 
+# spring boot 启用调试模式
+debug:  true
 
+# 配置参考：https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ========== Spring ==========
 spring:
   # Spring 数据库
@@ -25,6 +28,7 @@ spring:
       enabled:  true
       # 通过YOUR_URL/h2访问
       path: /h2
+      DB_CLOSE_ON_EXIT: false
       # 远程访问
       settings.web-allow-others:  true
 
@@ -39,6 +43,9 @@ spring:
       # 使用Hibernate初始化数据库
       ddl-auto:  create-drop
 
+  # thymeleaf
+  thymeleaf.mode: HTML5
+
   # Spring 国际化配置
   messages:
     basename: i18n/messages
@@ -50,20 +57,8 @@ spring:
 
 
 # ========== 其他 ==========
+# 启用HTTP响应压缩
+server.compression.enabled: true
 # 系统监控
 management.security.enabled:  false
 
-
-# ========== 日志 ==========
-logging:
-  # 日志输出格式
-  pattern.console:  "%date %-5level [${HOSTNAME} %thread %X{LOGS_USER}] %caller{1}%msg%n"
-  # 输出级别
-  level:
-    com.example.ShadowSocksShare: DEBUG
-
-    org.jsoup:  DEBUG
-    # hibernate
-    org.hibernate:  DEBUG
-
-    root: INFO

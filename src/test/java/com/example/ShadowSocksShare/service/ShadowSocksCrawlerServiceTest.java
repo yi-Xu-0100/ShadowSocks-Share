@@ -1,9 +1,9 @@
 package com.example.ShadowSocksShare.service;
 
 import com.example.ShadowSocksShare.BaseTest;
-import com.example.ShadowSocksShare.dao.ShadowSocksRepository;
-import com.example.ShadowSocksShare.entity.ShadowSocksDetailsEntity;
-import com.example.ShadowSocksShare.entity.ShadowSocksEntity;
+import com.example.ShadowSocksShare.domain.ShadowSocksRepository;
+import com.example.ShadowSocksShare.domain.ShadowSocksDetailsEntity;
+import com.example.ShadowSocksShare.domain.ShadowSocksEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

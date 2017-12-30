@@ -1,4 +1,4 @@
-package com.example.ShadowSocksShare.entity;
+package com.example.ShadowSocksShare.domain;
 
 import lombok.*;
 import org.apache.commons.codec.binary.Base64;

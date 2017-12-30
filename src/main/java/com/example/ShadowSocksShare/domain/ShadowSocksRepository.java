@@ -1,7 +1,6 @@
-package com.example.ShadowSocksShare.dao;
+package com.example.ShadowSocksShare.domain;
 
 
-import com.example.ShadowSocksShare.entity.ShadowSocksEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
