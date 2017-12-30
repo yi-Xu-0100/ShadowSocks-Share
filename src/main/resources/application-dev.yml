@@ -4,6 +4,10 @@
 # spring boot 启用调试模式
 debug:  true
 
+server:
+  context-path: /
+  display-name: ShadowSocks-Share
+
 # 配置参考：https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ========== Spring ==========
 spring:
