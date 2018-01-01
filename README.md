@@ -34,4 +34,4 @@
 地址     | 扫描间隔
 -------- | ---
 https://global.ishadowx.net/ | 3 小时
-https://doub.io/sszhfx/ | 20 小时
+https://doub.io/sszhfx/ | 3 小时

@@ -1,9 +1,9 @@
 package com.example.ShadowSocksShare.service.impl;
 
-import com.example.ShadowSocksShare.domain.ShadowSocksDetailsRepository;
-import com.example.ShadowSocksShare.domain.ShadowSocksRepository;
 import com.example.ShadowSocksShare.domain.ShadowSocksDetailsEntity;
+import com.example.ShadowSocksShare.domain.ShadowSocksDetailsRepository;
 import com.example.ShadowSocksShare.domain.ShadowSocksEntity;
+import com.example.ShadowSocksShare.domain.ShadowSocksRepository;
 import com.example.ShadowSocksShare.service.ShadowSocksCrawlerService;
 import com.example.ShadowSocksShare.service.ShadowSocksSerivce;
 import com.google.zxing.BarcodeFormat;
@@ -12,6 +12,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -91,16 +92,17 @@ public class ShadowSocksSerivceImpl implements ShadowSocksSerivce {
 	@Override
 	@Transactional
 	public void checkValid() {
-		List<ShadowSocksEntity> entityList = shadowSocksRepository.findAll();
-		for (ShadowSocksEntity shadowSocksEntity : entityList) {
-			for (ShadowSocksDetailsEntity shadowSocksDetailsEntity : shadowSocksEntity.getShadowSocksSet()) {
-				boolean _valid = ShadowSocksCrawlerService.isReachable(shadowSocksDetailsEntity);
-				// 如果检测结果与库中数据 不一致，则更新数据
-				if (_valid != shadowSocksDetailsEntity.isValid()) {
-					shadowSocksDetailsEntity.setValid(_valid);
-					shadowSocksDetailsEntity.setValidTime(new Date());
-					shadowSocksDetailsRepository.save(shadowSocksDetailsEntity);
-				}
+		// 查询 一小时前 更新的数据（即：一小时内更新过的数据，不测试有效性）
+		Date qDate = DateUtils.addHours(new Date(), -1);
+		Page<ShadowSocksDetailsEntity> entityList = shadowSocksDetailsRepository.findByValidTimeLessThanEqual(qDate);
+
+		for (ShadowSocksDetailsEntity shadowSocksDetailsEntity : entityList.getContent()) {
+			boolean _valid = ShadowSocksCrawlerService.isReachable(shadowSocksDetailsEntity);
+			// 如果检测结果与库中数据 不一致，则更新数据
+			if (_valid != shadowSocksDetailsEntity.isValid()) {
+				shadowSocksDetailsEntity.setValid(_valid);
+				shadowSocksDetailsEntity.setValidTime(new Date());
+				shadowSocksDetailsRepository.save(shadowSocksDetailsEntity);
 			}
 		}
 	}

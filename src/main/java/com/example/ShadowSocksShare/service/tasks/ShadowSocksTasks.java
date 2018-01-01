@@ -55,8 +55,6 @@ public class ShadowSocksTasks {
 	// @Scheduled(cron = "0 */2 * * * ?")
 	@Scheduled(cron = "0 0 */1 * * ?")
 	public void checkValid() {
-		log.debug("定时有效性检查开始...");
 		shadowSocksSerivce.checkValid();
-		log.debug("定时有效性检查结束...");
 	}
 }
