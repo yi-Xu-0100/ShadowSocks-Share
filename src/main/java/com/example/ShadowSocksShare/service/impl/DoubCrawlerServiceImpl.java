@@ -35,24 +35,26 @@ public class DoubCrawlerServiceImpl extends ShadowSocksCrawlerService {
 		for (int i = 0; i < ssList.size(); i++) {
 			try {
 				Element element = ssList.get(i);
-				String ssrHtml = element.attributes().get("href");
-				String ssrLink = ssrHtml.replace("http://doub.pw/qr/qr.php?text=", "");
+				if (element.hasText() && element.text().equalsIgnoreCase("ssr")) {
+					String ssrHtml = element.attributes().get("href");
+					String ssrLink = ssrHtml.replace("http://doub.pw/qr/qr.php?text=", "");
 
-				ShadowSocksDetailsEntity ss = parseLink(ssrLink);
-				ss.setValid(false);
-				ss.setValidTime(new Date());
-				ss.setRemarks(document.title());
-				ss.setGroup("ShadowSocks-Share");
+					ShadowSocksDetailsEntity ss = parseLink(ssrLink);
+					ss.setValid(false);
+					ss.setValidTime(new Date());
+					ss.setRemarks(document.title());
+					ss.setGroup("ShadowSocks-Share");
 
-				// 测试网络
-				if (isReachable(ss))
-					ss.setValid(true);
+					// 测试网络
+					if (isReachable(ss))
+						ss.setValid(true);
 
-				// 无论是否可用都入库
-				set.add(ss);
+					// 无论是否可用都入库
+					set.add(ss);
 
-				log.debug("*************** 第 {} 条 ***************{}{}", i + 1, System.lineSeparator(), ss);
-				// log.debug("{}", ss.getLink());
+					log.debug("*************** 第 {} 条 ***************{}{}", i + 1, System.lineSeparator(), ss);
+					// log.debug("{}", ss.getLink());
+				}
 			} catch (Exception e) {
 				log.error(e.getMessage(), e);
 			}
