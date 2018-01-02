@@ -99,6 +99,6 @@ public class ShadowSocksDetailsEntity implements Serializable {
 				.append("&protoparam=")
 				.append("&remarks=").append(Base64.encodeBase64URLSafeString(remarks.getBytes()))
 				.append("&group=").append(Base64.encodeBase64URLSafeString(group.getBytes()));
-		return "ssr://" + Base64.encodeBase64String(link.toString().getBytes());
+		return "ssr://" + Base64.encodeBase64String(link.toString().getBytes()) + "\r\n";
 	}
 }
