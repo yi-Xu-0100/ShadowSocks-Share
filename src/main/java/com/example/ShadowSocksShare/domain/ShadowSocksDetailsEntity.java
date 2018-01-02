@@ -94,11 +94,7 @@ public class ShadowSocksDetailsEntity implements Serializable {
 				.append(SSR_LINK_SEPARATOR).append(protocol)
 				.append(SSR_LINK_SEPARATOR).append(method)
 				.append(SSR_LINK_SEPARATOR).append(obfs)
-				.append(SSR_LINK_SEPARATOR).append(Base64.encodeBase64URLSafeString(password.getBytes()))
-				.append("/?obfsparam=")
-				.append("&protoparam=")
-				.append("&remarks=").append(Base64.encodeBase64URLSafeString(remarks.getBytes()))
-				.append("&group=").append(Base64.encodeBase64URLSafeString(group.getBytes()));
+				.append(SSR_LINK_SEPARATOR).append(Base64.encodeBase64URLSafeString(password.getBytes()));
 		return "ssr://" + Base64.encodeBase64String(link.toString().getBytes());
 	}
 }
