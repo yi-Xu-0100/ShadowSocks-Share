@@ -2,15 +2,21 @@ package com.example.ShadowSocksShare.service;
 
 import com.example.ShadowSocksShare.domain.ShadowSocksDetailsEntity;
 import com.example.ShadowSocksShare.domain.ShadowSocksEntity;
+import com.google.zxing.*;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.URL;
 import java.util.Date;
 import java.util.Set;
 
@@ -30,6 +36,19 @@ public abstract class ShadowSocksCrawlerService {
 	private static final int TIME_OUT = 60 * 1000;
 	// 测试网络超时时间（3 秒）
 	private static final int SOCKET_TIME_OUT = 3 * 1000;
+
+	/**
+	 * 网络连通性测试
+	 */
+	public static boolean isReachable(ShadowSocksDetailsEntity ss) {
+		try (Socket socket = new Socket()) {
+			socket.connect(new InetSocketAddress(ss.getServer(), ss.getServer_port()), SOCKET_TIME_OUT);
+			return true;
+		} catch (IOException e) {
+			// log.error(e.getMessage(), e);
+		}
+		return false;
+	}
 
 	/**
 	 * 请求目标 URL 获取 Document
@@ -67,28 +86,13 @@ public abstract class ShadowSocksCrawlerService {
 	}
 
 	/**
-	 * 网络连通性测试
-	 */
-	public static boolean isReachable(ShadowSocksDetailsEntity ss) {
-		try (Socket socket = new Socket()) {
-			socket.connect(new InetSocketAddress(ss.getServer(), ss.getServer_port()), SOCKET_TIME_OUT);
-			return true;
-		} catch (IOException e) {
-			// log.error(e.getMessage(), e);
-		}
-		return false;
-	}
-
-	/**
 	 * 连接解析
 	 */
 	protected ShadowSocksDetailsEntity parseLink(String link) {
-
+		// 分为 SSR 或 SS
 		if (StringUtils.isNotBlank(link) && StringUtils.startsWithIgnoreCase(link, "ssr")) {
 			String ssrInfoStr = new String(Base64.decodeBase64(StringUtils.remove(link, "ssr://")));
 			try {
-				System.out.println(ssrInfoStr);
-
 				// 按照 /? 拆分，前半段为 主要配置信息，后半段为 URL 参数
 				String[] strs = StringUtils.split(ssrInfoStr, "/?");
 
@@ -111,9 +115,29 @@ public abstract class ShadowSocksCrawlerService {
 			} catch (Exception e) {
 				throw new RuntimeException("SSR 连接[" + ssrInfoStr + "]解析异常：" + e.getMessage(), e);
 			}
+		} else if (StringUtils.isNotBlank(link) && StringUtils.startsWithIgnoreCase(link, "ss")) {
+			// aes-256-cfb:60948959@jp01.fss.fun:15785
+			String ssInfoStr = new String(Base64.decodeBase64(StringUtils.remove(link, "ss://")));
+			String[] strs = StringUtils.split(ssInfoStr, "@");
+			String[] ssInfo1 = StringUtils.split(strs[0], ":");
+			String[] ssInfo2 = StringUtils.split(strs[1], ":");
+
+			ShadowSocksDetailsEntity entity = new ShadowSocksDetailsEntity(ssInfo2[0], Integer.parseInt(ssInfo2[1].trim()), ssInfo1[1], ssInfo1[0], "origin", "plain");
+			return entity;
 		} else {
 			throw new IllegalArgumentException("SSR 连接[" + link + "]解析异常：协议类型错误");
 		}
+	}
+
+	/**
+	 * 图片解析
+	 */
+	protected ShadowSocksDetailsEntity parseURL(String imgURL) throws IOException, NotFoundException {
+		BufferedImage image = ImageIO.read(new URL(imgURL));
+		Binarizer binarizer = new HybridBinarizer(new BufferedImageLuminanceSource(image));
+		BinaryBitmap binaryBitmap = new BinaryBitmap(binarizer);
+		Result res = new MultiFormatReader().decode(binaryBitmap);
+		return parseLink(res.toString());
 	}
 
 	/**

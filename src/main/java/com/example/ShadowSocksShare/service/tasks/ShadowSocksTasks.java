@@ -3,6 +3,7 @@ package com.example.ShadowSocksShare.service.tasks;
 import com.example.ShadowSocksShare.service.ShadowSocksCrawlerService;
 import com.example.ShadowSocksShare.service.ShadowSocksSerivce;
 import com.example.ShadowSocksShare.service.impl.DoubCrawlerServiceImpl;
+import com.example.ShadowSocksShare.service.impl.FreeSS_EasyToUseCrawlerServiceImpl;
 import com.example.ShadowSocksShare.service.impl.IShadowCrawlerServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -27,6 +28,9 @@ public class ShadowSocksTasks {
 	@Autowired
 	@Qualifier("doubCrawlerServiceImpl")
 	private ShadowSocksCrawlerService doubCrawlerServiceImpl;                // https://doub.io
+	@Autowired
+	@Qualifier("freeSS_EasyToUseCrawlerServiceImpl")
+	private ShadowSocksCrawlerService freeSS_EasyToUseCrawlerServiceImpl;                // https://freess.cx/#portfolio-preview
 
 	/**
 	 * 第一次延迟 10 秒执行，之后每 fixedRate 执行一次
@@ -41,12 +45,9 @@ public class ShadowSocksTasks {
 		shadowSocksSerivce.crawlerAndSave(doubCrawlerServiceImpl);
 	}
 
-	/**
-	 * 为防止 herokuapp 休眠，每 10 分钟访问一次
-	 */
-	@Scheduled(initialDelay = 10 * 60 * 1000, fixedRate = 10 * 60 * 1000)
-	public void monitor() throws IOException {
-		Jsoup.connect("https://shadowsocks-share.herokuapp.com/subscribe").get();
+	@Scheduled(initialDelay = 30 * 1000, fixedRate = FreeSS_EasyToUseCrawlerServiceImpl.REFRESH_TIME)
+	public void FreeSS_EasyToUseCrawler() {
+		shadowSocksSerivce.crawlerAndSave(freeSS_EasyToUseCrawlerServiceImpl);
 	}
 
 	/**
@@ -56,5 +57,13 @@ public class ShadowSocksTasks {
 	@Scheduled(cron = "0 0 */1 * * ?")
 	public void checkValid() {
 		shadowSocksSerivce.checkValid();
+	}
+
+	/**
+	 * 为防止 herokuapp 休眠，每 10 分钟访问一次
+	 */
+	@Scheduled(initialDelay = 10 * 60 * 1000, fixedRate = 10 * 60 * 1000)
+	public void monitor() throws IOException {
+		Jsoup.connect("https://shadowsocks-share.herokuapp.com/subscribe").get();
 	}
 }
