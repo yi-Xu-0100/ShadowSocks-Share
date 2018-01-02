@@ -35,7 +35,7 @@ public class ShadowSocksTasks {
 	/**
 	 * 第一次延迟 10 秒执行，之后每 fixedRate 执行一次
 	 */
-	@Scheduled(initialDelay = 10 * 1000, fixedRate = IShadowCrawlerServiceImpl.REFRESH_TIME)
+	// @Scheduled(initialDelay = 10 * 1000, fixedRate = IShadowCrawlerServiceImpl.REFRESH_TIME)
 	public void iShadowCrawler() {
 		shadowSocksSerivce.crawlerAndSave(iShadowCrawlerServiceImpl);
 	}
@@ -45,7 +45,7 @@ public class ShadowSocksTasks {
 		shadowSocksSerivce.crawlerAndSave(doubCrawlerServiceImpl);
 	}
 
-	@Scheduled(initialDelay = 30 * 1000, fixedRate = FreeSS_EasyToUseCrawlerServiceImpl.REFRESH_TIME)
+	// @Scheduled(initialDelay = 30 * 1000, fixedRate = FreeSS_EasyToUseCrawlerServiceImpl.REFRESH_TIME)
 	public void FreeSS_EasyToUseCrawler() {
 		shadowSocksSerivce.crawlerAndSave(freeSS_EasyToUseCrawlerServiceImpl);
 	}
