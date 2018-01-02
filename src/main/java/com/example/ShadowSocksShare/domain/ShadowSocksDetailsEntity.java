@@ -84,4 +84,21 @@ public class ShadowSocksDetailsEntity implements Serializable {
 				.append("&group=").append(Base64.encodeBase64URLSafeString(group.getBytes()));
 		return "ssr://" + Base64.encodeBase64URLSafeString(link.toString().getBytes());
 	}
+
+	public String getLinkNotSafe() {
+		// 104.236.187.174:1118:auth_sha1_v4:chacha20:tls1.2_ticket_auth:ZGFzamtqZGFr/?obfsparam=&remarks=MTExOCDml6fph5HlsbEgMTDkurogMTAwRyBTU1I&group=Q2hhcmxlcyBYdQ
+		StringBuilder link = new StringBuilder();
+		link
+				.append(server)
+				.append(SSR_LINK_SEPARATOR).append(server_port)
+				.append(SSR_LINK_SEPARATOR).append(protocol)
+				.append(SSR_LINK_SEPARATOR).append(method)
+				.append(SSR_LINK_SEPARATOR).append(obfs)
+				.append(SSR_LINK_SEPARATOR).append(Base64.encodeBase64URLSafeString(password.getBytes()))
+				.append("/?obfsparam=")
+				.append("&protoparam=")
+				.append("&remarks=").append(Base64.encodeBase64URLSafeString(remarks.getBytes()))
+				.append("&group=").append(Base64.encodeBase64URLSafeString(group.getBytes()));
+		return "ssr://" + Base64.encodeBase64String(link.toString().getBytes());
+	}
 }

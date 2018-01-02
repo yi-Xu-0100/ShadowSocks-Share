@@ -54,10 +54,10 @@ public class ShadowSocksEntity implements Serializable {
 			for (ShadowSocksDetailsEntity entity : shadowSocksSet) {
 				if (valid) {
 					if (entity.isValid()) {
-						link.append(entity.getLink()).append("\n\t");
+						link.append(entity.getLinkNotSafe());
 					}
 				} else {
-					link.append(entity.getLink()).append("\n\t");
+					link.append(entity.getLinkNotSafe());
 				}
 			}
 			return Base64.encodeBase64URLSafeString(link.toString().getBytes());
