@@ -45,7 +45,7 @@ public class FreeSS_EasyToUseCrawlerServiceImpl extends ShadowSocksCrawlerServic
 				ss.setValid(false);
 				ss.setValidTime(new Date());
 				ss.setRemarks(document.title());
-				// ss.setGroup(getTargetURL());
+				ss.setGroup("ShadowSocks-Share");
 
 				// 测试网络
 				if (isReachable(ss))

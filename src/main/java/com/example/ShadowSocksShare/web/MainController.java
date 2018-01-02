@@ -57,7 +57,7 @@ public class MainController {
 	 */
 	@RequestMapping("/subscribe")
 	@ResponseBody
-	public String subscribe(boolean valid, @PageableDefault(page = 0, size = 50, sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable) {
+	public String subscribe(boolean valid, @PageableDefault(page = 0, size = 1000, sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable) {
 		List<ShadowSocksEntity> ssrList = shadowSocksSerivceImpl.findAll(pageable);
 		String ssrLink = shadowSocksSerivceImpl.toSSLink(ssrList, valid);
 		return StringUtils.isNotBlank(ssrLink) ? ssrLink : "无有效 SSR 连接，请稍后重试！";

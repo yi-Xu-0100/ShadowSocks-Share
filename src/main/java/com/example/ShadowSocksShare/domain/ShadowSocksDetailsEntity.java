@@ -60,7 +60,7 @@ public class ShadowSocksDetailsEntity implements Serializable {
 	private String remarks;    // 备注
 
 	@Column(name = "grp")
-	private String group = "ShadowSocks-Share"; // 组
+	private String group; // 组
 
 	@Column
 	private boolean valid;    // 是否有效
@@ -79,8 +79,8 @@ public class ShadowSocksDetailsEntity implements Serializable {
 				.append(SSR_LINK_SEPARATOR).append(obfs)
 				.append(SSR_LINK_SEPARATOR).append(Base64.encodeBase64URLSafeString(password.getBytes()))
 				.append("/?obfsparam=")
-				.append("&remarks=").append(Base64.encodeBase64URLSafeString((remarks != null ? remarks : "").getBytes()))
-				.append("&group=").append(Base64.encodeBase64URLSafeString((group != null ? group : "").getBytes()));
+				.append("&remarks=").append(Base64.encodeBase64URLSafeString(remarks.getBytes()))
+				.append("&group=").append(Base64.encodeBase64URLSafeString(group.getBytes()));
 		return "ssr://" + Base64.encodeBase64URLSafeString(link.toString().getBytes());
 	}
 }
