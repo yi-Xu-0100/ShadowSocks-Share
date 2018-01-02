@@ -2,11 +2,9 @@ package com.example.ShadowSocksShare.domain;
 
 import lombok.*;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.Date;
 
 /**
@@ -62,13 +60,13 @@ public class ShadowSocksDetailsEntity implements Serializable {
 	private String remarks;    // 备注
 
 	@Column(name = "grp")
-	private String group; // 组
+	private String group = "ShadowSocks-Share"; // 组
 
 	@Column
 	private boolean valid;    // 是否有效
 
 	@Column
-	private Date validTime;		// 有效性验证时间
+	private Date validTime;        // 有效性验证时间
 
 	public String getLink() {
 		// 104.236.187.174:1118:auth_sha1_v4:chacha20:tls1.2_ticket_auth:ZGFzamtqZGFr/?obfsparam=&remarks=MTExOCDml6fph5HlsbEgMTDkurogMTAwRyBTU1I&group=Q2hhcmxlcyBYdQ
