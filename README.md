@@ -8,6 +8,7 @@
 > - 本项目仅限编程学习、讨论使用，**请在适用法律允许的范围内使用**。
 > - 本项目提供的信息，来自于其他共享站点，无法保证内容的准确性、可靠性、可用性、完整性。
 
+
 #### 使用说明
 
 ##### Windows :
@@ -43,3 +44,11 @@
 https://global.ishadowx.net/ | 3 小时
 https://doub.io/sszhfx/ | 3 小时
 https://freess.cx/ | 5 小时
+
+
+#### TO DO
+
+1. 计划支持下列站点：
+    1. https://en.ss8.fun/
+    1. https://freessr.win/
+    1. https://plus.google.com/communities/104092405342699579599
