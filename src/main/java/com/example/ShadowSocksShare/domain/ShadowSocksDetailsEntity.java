@@ -2,9 +2,12 @@ package com.example.ShadowSocksShare.domain;
 
 import lombok.*;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.CharSetUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 /**
@@ -77,12 +80,12 @@ public class ShadowSocksDetailsEntity implements Serializable {
 				.append(SSR_LINK_SEPARATOR).append(protocol)
 				.append(SSR_LINK_SEPARATOR).append(method)
 				.append(SSR_LINK_SEPARATOR).append(obfs)
-				.append(SSR_LINK_SEPARATOR).append(Base64.encodeBase64URLSafeString(password.getBytes()))
+				.append(SSR_LINK_SEPARATOR).append(Base64.encodeBase64URLSafeString(password.getBytes(StandardCharsets.UTF_8)))
 				.append("/?obfsparam=")
-				.append("&protoparam=")
-				.append("&remarks=").append(Base64.encodeBase64URLSafeString(remarks.getBytes()))
-				.append("&group=").append(Base64.encodeBase64URLSafeString(group.getBytes()));
-		return "ssr://" + Base64.encodeBase64URLSafeString(link.toString().getBytes());
+				// .append("&protoparam=")
+				.append("&remarks=").append(Base64.encodeBase64URLSafeString(remarks.getBytes(StandardCharsets.UTF_8)))
+				.append("&group=").append(Base64.encodeBase64URLSafeString(group.getBytes(StandardCharsets.UTF_8)));
+		return "ssr://" + Base64.encodeBase64URLSafeString(link.toString().getBytes(StandardCharsets.UTF_8));
 	}
 
 	public String getLinkNotSafe() {
@@ -94,11 +97,11 @@ public class ShadowSocksDetailsEntity implements Serializable {
 				.append(SSR_LINK_SEPARATOR).append(protocol)
 				.append(SSR_LINK_SEPARATOR).append(method)
 				.append(SSR_LINK_SEPARATOR).append(obfs)
-				.append(SSR_LINK_SEPARATOR).append(Base64.encodeBase64URLSafeString(password.getBytes()))
+				.append(SSR_LINK_SEPARATOR).append(Base64.encodeBase64URLSafeString(password.getBytes(StandardCharsets.UTF_8)))
 				.append("/?obfsparam=")
-				.append("&protoparam=")
-				.append("&remarks=").append(Base64.encodeBase64URLSafeString(remarks.getBytes()))
-				.append("&group=").append(Base64.encodeBase64URLSafeString(group.getBytes()));
-		return "ssr://" + Base64.encodeBase64String(link.toString().getBytes()) + "\n";
+				// .append("&protoparam=")
+				.append("&remarks=").append(Base64.encodeBase64URLSafeString(remarks.getBytes(StandardCharsets.UTF_8)))
+				.append("&group=").append(Base64.encodeBase64URLSafeString(group.getBytes(StandardCharsets.UTF_8)));
+		return "ssr://" + Base64.encodeBase64String(link.toString().getBytes(StandardCharsets.UTF_8)) + "\n";
 	}
 }

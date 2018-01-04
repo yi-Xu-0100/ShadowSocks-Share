@@ -60,7 +60,7 @@ public class ShadowSocksEntity implements Serializable {
 					link.append(entity.getLinkNotSafe());
 				}
 			}
-			return Base64.encodeBase64String(link.toString().getBytes());
+			return Base64.encodeBase64String(link.toString().getBytes(StandardCharsets.UTF_8));
 		}
 		return "";
 	}

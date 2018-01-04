@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Set;
 
@@ -91,7 +92,7 @@ public abstract class ShadowSocksCrawlerService {
 	protected ShadowSocksDetailsEntity parseLink(String link) {
 		// 分为 SSR 或 SS
 		if (StringUtils.isNotBlank(link) && StringUtils.startsWithIgnoreCase(link, "ssr")) {
-			String ssrInfoStr = new String(Base64.decodeBase64(StringUtils.remove(link, "ssr://")));
+			String ssrInfoStr = new String(Base64.decodeBase64(StringUtils.remove(link, "ssr://").getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
 			try {
 				// 按照 /? 拆分，前半段为 主要配置信息，后半段为 URL 参数
 				String[] strs = StringUtils.split(ssrInfoStr, "/?");
@@ -101,7 +102,7 @@ public abstract class ShadowSocksCrawlerService {
 
 				String[] ssInfo = StringUtils.split(strs[0], ":", 6);
 
-				ShadowSocksDetailsEntity entity = new ShadowSocksDetailsEntity(ssInfo[0].trim(), Integer.parseInt(ssInfo[1].trim()), new String(Base64.decodeBase64(ssInfo[5].trim())), ssInfo[3].trim(), ssInfo[2].trim(), ssInfo[4].trim());
+				ShadowSocksDetailsEntity entity = new ShadowSocksDetailsEntity(ssInfo[0].trim(), Integer.parseInt(ssInfo[1].trim()), new String(Base64.decodeBase64(ssInfo[5].trim().getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8), ssInfo[3].trim(), ssInfo[2].trim(), ssInfo[4].trim());
 
 				/*String suffix_base64 = strs[1];
 				byte[] _remarks = Base64.decodeBase64(StringUtils.substringBetween(suffix_base64, "remarks=", "&"));
@@ -117,7 +118,7 @@ public abstract class ShadowSocksCrawlerService {
 			}
 		} else if (StringUtils.isNotBlank(link) && StringUtils.startsWithIgnoreCase(link, "ss")) {
 			// aes-256-cfb:60948959@jp01.fss.fun:15785
-			String ssInfoStr = new String(Base64.decodeBase64(StringUtils.remove(link, "ss://")));
+			String ssInfoStr = new String(Base64.decodeBase64(StringUtils.remove(link, "ss://").getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);
 			String[] strs = StringUtils.split(ssInfoStr, "@");
 			String[] ssInfo1 = StringUtils.split(strs[0], ":");
 			String[] ssInfo2 = StringUtils.split(strs[1], ":");
