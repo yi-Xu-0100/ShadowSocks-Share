@@ -5,6 +5,7 @@ import org.apache.commons.codec.binary.Base64;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Set;
 
