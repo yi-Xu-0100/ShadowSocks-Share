@@ -48,23 +48,4 @@ public class ShadowSocksEntity implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)   // 级联保存、更新、删除、刷新;延迟加载
 	@JoinColumn(name = "ss_id")                                        // 在 Details 表增加一个外键列来实现一对多的单向关联
 	private Set<ShadowSocksDetailsEntity> shadowSocksSet;           // 一对多，网站 ShadowSocks 信息
-
-	/*public String getLink(boolean valid) {
-		if (!shadowSocksSet.isEmpty()) {
-			StringBuilder link = new StringBuilder();
-			for (ShadowSocksDetailsEntity entity : shadowSocksSet) {
-				if (valid) {
-					if (entity.isValid()) {
-						link.append(entity.getLinkNotSafe());
-					}
-				} else {
-					link.append(entity.getLinkNotSafe());
-				}
-				log.debug("link ------>{}\n{}", entity, entity.getLinkNotSafe());
-			}
-			log.debug("links ------>{}\n{}", link, Base64.encodeBase64String(link.toString().getBytes(StandardCharsets.UTF_8)));
-			return Base64.encodeBase64String(link.toString().getBytes(StandardCharsets.UTF_8));
-		}
-		return "";
-	}*/
 }
