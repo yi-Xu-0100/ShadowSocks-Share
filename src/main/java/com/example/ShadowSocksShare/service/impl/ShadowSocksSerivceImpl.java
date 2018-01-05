@@ -13,6 +13,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 
@@ -74,16 +76,26 @@ public class ShadowSocksSerivceImpl implements ShadowSocksSerivce {
 	}
 
 	/**
-	 * 3. 生成 SSR 连接
+	 * 3. 生成 SSR 订阅连接
 	 */
 	@Override
 	public String toSSLink(List<ShadowSocksEntity> entities, boolean valid) {
 		if (!entities.isEmpty()) {
 			StringBuilder link = new StringBuilder();
 			for (ShadowSocksEntity entity : entities) {
-				link.append(entity.getLink(valid));
+				for (ShadowSocksDetailsEntity detailsEntity : entity.getShadowSocksSet()) {
+					if (valid) {
+						if (detailsEntity.isValid()) {
+							link.append(detailsEntity.getLinkNotSafe());
+						}
+					} else {
+						link.append(detailsEntity.getLinkNotSafe());
+					}
+					// log.debug("link ------>{}\n{}", detailsEntity, detailsEntity.getLinkNotSafe());
+				}
 			}
-			return link.toString();
+			// log.debug(link.toString());
+			return Base64.encodeBase64String(link.toString().getBytes(StandardCharsets.UTF_8));
 		}
 		return "";
 	}

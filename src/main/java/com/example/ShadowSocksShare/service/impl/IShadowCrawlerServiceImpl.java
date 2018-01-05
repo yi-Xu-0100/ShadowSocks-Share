@@ -78,7 +78,7 @@ public class IShadowCrawlerServiceImpl extends ShadowSocksCrawlerService {
 
 					ss.setValid(false);
 					ss.setValidTime(new Date());
-					ss.setRemarks(document.title());
+					ss.setRemarks(TARGET_URL);
 					ss.setGroup("ShadowSocks-Share");
 
 					// 测试网络

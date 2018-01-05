@@ -1,17 +1,17 @@
 package com.example.ShadowSocksShare.domain;
 
 import lombok.*;
-import org.apache.commons.codec.binary.Base64;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Set;
 
 /**
  * ssr 信息
  */
+@Slf4j
 @Entity
 // @Table(uniqueConstraints = @UniqueConstraint(columnNames = "targetURL"))    // 唯一约束
 @Table(indexes = {@Index(columnList = "targetURL", unique = false)})           // 非唯一约束
@@ -49,7 +49,7 @@ public class ShadowSocksEntity implements Serializable {
 	@JoinColumn(name = "ss_id")                                        // 在 Details 表增加一个外键列来实现一对多的单向关联
 	private Set<ShadowSocksDetailsEntity> shadowSocksSet;           // 一对多，网站 ShadowSocks 信息
 
-	public String getLink(boolean valid) {
+	/*public String getLink(boolean valid) {
 		if (!shadowSocksSet.isEmpty()) {
 			StringBuilder link = new StringBuilder();
 			for (ShadowSocksDetailsEntity entity : shadowSocksSet) {
@@ -60,9 +60,11 @@ public class ShadowSocksEntity implements Serializable {
 				} else {
 					link.append(entity.getLinkNotSafe());
 				}
+				log.debug("link ------>{}\n{}", entity, entity.getLinkNotSafe());
 			}
+			log.debug("links ------>{}\n{}", link, Base64.encodeBase64String(link.toString().getBytes(StandardCharsets.UTF_8)));
 			return Base64.encodeBase64String(link.toString().getBytes(StandardCharsets.UTF_8));
 		}
 		return "";
-	}
+	}*/
 }

@@ -1,11 +1,10 @@
 package com.example.ShadowSocksShare.service;
 
 import com.example.ShadowSocksShare.BaseTest;
-import com.example.ShadowSocksShare.domain.ShadowSocksRepository;
 import com.example.ShadowSocksShare.domain.ShadowSocksDetailsEntity;
 import com.example.ShadowSocksShare.domain.ShadowSocksEntity;
+import com.example.ShadowSocksShare.domain.ShadowSocksRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -21,10 +20,6 @@ public class ShadowSocksCrawlerServiceTest extends BaseTest {
 	@Autowired
 	private ShadowSocksRepository shadowSocksRepository;
 
-	@Test
-	public void getShadowSocks() {
-		log.debug("{}", iShadowCrawlerServiceImpl.getShadowSocks().getLink(false));
-	}
 
 	public void aa() {
 		ShadowSocksEntity socksEntity = new ShadowSocksEntity("targetURL", "title", true, new Date());

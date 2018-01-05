@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.Socket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -63,7 +64,7 @@ public abstract class ShadowSocksCrawlerService {
 					.ignoreContentType(true)
 					.followRedirects(true)
 					.timeout(TIME_OUT)
-					// .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 1080)))
+					.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 1080)))
 					.get();
 		} catch (IOException e) {
 			throw new IOException("请求[" + getTargetURL() + "]异常：" + e.getMessage(), e);

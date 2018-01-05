@@ -2,11 +2,9 @@ package com.example.ShadowSocksShare.domain;
 
 import lombok.*;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.CharSetUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
