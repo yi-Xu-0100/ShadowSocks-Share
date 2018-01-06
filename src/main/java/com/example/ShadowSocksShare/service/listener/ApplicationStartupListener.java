@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,6 +21,7 @@ public class ApplicationStartupListener {
 	/**
 	 * 系统启动 监听事件
 	 */
+	@Async
 	@EventListener
 	public void handleOrderStateChange(ContextRefreshedEvent contextRefreshedEvent) {
 		log.debug(contextRefreshedEvent.toString());
