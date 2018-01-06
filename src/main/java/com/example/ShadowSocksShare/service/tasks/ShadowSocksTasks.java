@@ -32,22 +32,25 @@ public class ShadowSocksTasks {
 	@Qualifier("freeSS_EasyToUseCrawlerServiceImpl")
 	private ShadowSocksCrawlerService freeSS_EasyToUseCrawlerServiceImpl;                // https://freess.cx/#portfolio-preview
 
-	/**
-	 * 第一次延迟 10 秒执行，之后每 fixedRate 执行一次
-	 */
-	@Scheduled(initialDelay = 10 * 1000, fixedRate = IShadowCrawlerServiceImpl.REFRESH_TIME)
+	@Scheduled(cron = "0 10 */3 * * ?")
 	public void iShadowCrawler() {
 		shadowSocksSerivce.crawlerAndSave(iShadowCrawlerServiceImpl);
 	}
 
-	@Scheduled(initialDelay = 20 * 1000, fixedRate = DoubCrawlerServiceImpl.REFRESH_TIME)
+	@Scheduled(cron = "0 10 */6 * * ?")
 	public void doubCrawler() {
 		shadowSocksSerivce.crawlerAndSave(doubCrawlerServiceImpl);
 	}
 
-	@Scheduled(initialDelay = 30 * 1000, fixedRate = FreeSS_EasyToUseCrawlerServiceImpl.REFRESH_TIME)
-	public void FreeSS_EasyToUseCrawler() {
+	@Scheduled(cron = "0 10 */12 * * ?")
+	public void freeSS_EasyToUseCrawler() {
 		shadowSocksSerivce.crawlerAndSave(freeSS_EasyToUseCrawlerServiceImpl);
+	}
+
+	public void runAll() {
+		iShadowCrawler();
+		doubCrawler();
+		freeSS_EasyToUseCrawler();
 	}
 
 	/**
@@ -62,7 +65,7 @@ public class ShadowSocksTasks {
 	/**
 	 * 为防止 herokuapp 休眠，每 10 分钟访问一次
 	 */
-	@Scheduled(initialDelay = 10 * 60 * 1000, fixedRate = 10 * 60 * 1000)
+	@Scheduled(cron = "0 */20 * * * ?")
 	public void monitor() throws IOException {
 		Jsoup.connect("https://shadowsocks-share.herokuapp.com/subscribe").get();
 	}

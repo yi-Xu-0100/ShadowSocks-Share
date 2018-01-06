@@ -22,8 +22,6 @@ import java.util.Set;
 @Slf4j
 @Service("iShadowCrawlerServiceImpl")
 public class IShadowCrawlerServiceImpl extends ShadowSocksCrawlerService {
-	// 网站刷新时间（抓取SS信息间隔时间）
-	public static final int REFRESH_TIME = 3 * 60 * 60 * 1000;
 	// 目标网站 URL
 	private static final String TARGET_URL = "https://global.ishadowx.net/";
 

@@ -42,8 +42,8 @@
 地址     | 扫描间隔
 -------- | ---
 https://global.ishadowx.net/ | 3 小时
-https://doub.io/sszhfx/ | 3 小时
-https://freess.cx/ | 5 小时
+https://doub.io/sszhfx/ | 6 小时
+https://freess.cx/ | 12 小时
 
 
 #### TO DO
