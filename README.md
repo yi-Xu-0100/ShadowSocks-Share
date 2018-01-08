@@ -44,11 +44,11 @@
 https://global.ishadowx.net/ | 3 小时
 https://doub.io/sszhfx/ | 6 小时
 https://freess.cx/ | 12 小时
+https://en.ss8.fun/ | 4 小时
 
 
 #### TO DO
 
 1. 计划支持下列站点：
-    1. https://en.ss8.fun/
     1. https://freessr.win/
     1. https://plus.google.com/communities/104092405342699579599

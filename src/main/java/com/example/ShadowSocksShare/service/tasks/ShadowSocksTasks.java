@@ -29,6 +29,9 @@ public class ShadowSocksTasks {
 	@Autowired
 	@Qualifier("freeSS_EasyToUseCrawlerServiceImpl")
 	private ShadowSocksCrawlerService freeSS_EasyToUseCrawlerServiceImpl;                // https://freess.cx/#portfolio-preview
+	@Autowired
+	@Qualifier("ss8ServiceImpl")
+	private ShadowSocksCrawlerService ss8ServiceImpl;                // https://en.ss8.fun/
 
 	@Scheduled(cron = "0 10 */3 * * ?")
 	public void iShadowCrawler() {
@@ -43,6 +46,11 @@ public class ShadowSocksTasks {
 	@Scheduled(cron = "0 10 */12 * * ?")
 	public void freeSS_EasyToUseCrawler() {
 		shadowSocksSerivce.crawlerAndSave(freeSS_EasyToUseCrawlerServiceImpl);
+	}
+
+	@Scheduled(cron = "0 10 */4 * * ?")
+	public void ss8Crawler() {
+		shadowSocksSerivce.crawlerAndSave(ss8ServiceImpl);
 	}
 
 	/**
