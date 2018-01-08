@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * doub 爬虫
+ * doub
  * https://doub.io
  */
 @Slf4j

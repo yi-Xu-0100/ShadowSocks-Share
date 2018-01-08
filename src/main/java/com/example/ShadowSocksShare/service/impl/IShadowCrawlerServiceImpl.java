@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * iShadow 爬虫
+ * iShadow
  * https://global.ishadowx.net/
  */
 @Slf4j
@@ -42,9 +42,9 @@ public class IShadowCrawlerServiceImpl extends ShadowSocksCrawlerService {
 				// log.debug(ssHtml.html());
 				// 如果 得到 大于 5 个（address、port、password、method、agreement、obscure），分别取相应信息
 				if (ssHtml.size() >= 5) {
-					// IP Address
+					// server
 					String server = ssHtml.get(0).select("span[id]").first().html();
-					Assert.hasLength(server, "address 不能为空");
+					Assert.hasLength(server, "server 不能为空");
 
 					int server_port = NumberUtils.toInt(ssHtml.get(1).select("span[id]").first().html());
 					// Assert.isNull(port, "port 不能为空");
