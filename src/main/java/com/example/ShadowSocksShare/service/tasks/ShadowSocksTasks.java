@@ -2,9 +2,6 @@ package com.example.ShadowSocksShare.service.tasks;
 
 import com.example.ShadowSocksShare.service.ShadowSocksCrawlerService;
 import com.example.ShadowSocksShare.service.ShadowSocksSerivce;
-import com.example.ShadowSocksShare.service.impl.DoubCrawlerServiceImpl;
-import com.example.ShadowSocksShare.service.impl.FreeSS_EasyToUseCrawlerServiceImpl;
-import com.example.ShadowSocksShare.service.impl.IShadowCrawlerServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +19,7 @@ import java.io.IOException;
 public class ShadowSocksTasks {
 	@Autowired
 	private ShadowSocksSerivce shadowSocksSerivce;
+
 	@Autowired
 	@Qualifier("iShadowCrawlerServiceImpl")
 	private ShadowSocksCrawlerService iShadowCrawlerServiceImpl;    // ishadow
@@ -45,12 +43,6 @@ public class ShadowSocksTasks {
 	@Scheduled(cron = "0 10 */12 * * ?")
 	public void freeSS_EasyToUseCrawler() {
 		shadowSocksSerivce.crawlerAndSave(freeSS_EasyToUseCrawlerServiceImpl);
-	}
-
-	public void runAll() {
-		iShadowCrawler();
-		doubCrawler();
-		freeSS_EasyToUseCrawler();
 	}
 
 	/**
