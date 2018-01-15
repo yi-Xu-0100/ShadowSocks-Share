@@ -3,6 +3,7 @@ package com.example.ShadowSocksShare.web;
 
 import com.example.ShadowSocksShare.domain.ShadowSocksDetailsEntity;
 import com.example.ShadowSocksShare.domain.ShadowSocksEntity;
+import com.example.ShadowSocksShare.service.CountSerivce;
 import com.example.ShadowSocksShare.service.ShadowSocksSerivce;
 import com.google.zxing.WriterException;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,8 @@ import java.util.List;
 public class MainController {
 	@Autowired
 	private ShadowSocksSerivce shadowSocksSerivceImpl;
+	@Autowired
+	private CountSerivce countSerivce;
 
 	/**
 	 * 首页
@@ -47,8 +50,6 @@ public class MainController {
 
 	/**
 	 * SSR 订阅地址
-	 *
-	 * @return
 	 */
 	@RequestMapping("/subscribe")
 	@ResponseBody
@@ -61,9 +62,15 @@ public class MainController {
 	/**
 	 * 二维码
 	 */
-	@RequestMapping(value = "/createQRCode", produces = {MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
+	@RequestMapping(value = "/createQRCode")
 	@ResponseBody
 	public ResponseEntity<byte[]> createQRCode(String text, int width, int height) throws IOException, WriterException {
 		return ResponseEntity.ok().contentType(MediaType.parseMediaType(MediaType.IMAGE_PNG_VALUE)).body(shadowSocksSerivceImpl.createQRCodeImage(text, width, height));
+	}
+
+	@RequestMapping(value = "/count")
+	@ResponseBody
+	public ResponseEntity<String> count() {
+		return ResponseEntity.ok().body(String.valueOf(countSerivce.get()));
 	}
 }

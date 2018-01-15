@@ -75,6 +75,6 @@ public class ShadowSocksTasks {
 	 */
 	@Scheduled(cron = "0 */20 * * * ?")
 	public void monitor() throws IOException {
-		Jsoup.connect("https://shadowsocks-share.herokuapp.com/subscribe").get();
+		Jsoup.connect("https://shadowsocks-share.herokuapp.com/count").get();
 	}
 }
