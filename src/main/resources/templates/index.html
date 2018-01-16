@@ -8,8 +8,8 @@
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
-          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
+          integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous"/>
     <!-- Font Awesome -->
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
 
@@ -48,13 +48,22 @@
                     <div class="dropdown-menu" aria-labelledby="dropdown02">
                         <a class="dropdown-item" th:href="${ssr.targetURL}" target="_blank"
                            th:each="ssr,iterStat : ${ssrList}">
-                            <th:block th:if="${ssr.valid}">
-                                <i class="fa fa-check-circle" aria-hidden="true">&nbsp; </i>
-                            </th:block>
-                            <th:block th:unless="${ssr.valid}">
-                                <i class="fa fa-times-circle" aria-hidden="true">&nbsp; </i>
-                            </th:block>
-                            <th:block th:text="${ssr.targetURL}"></th:block>
+                            <span class="badge badge-primary">
+                                <th:block th:if="${ssr.valid}">
+                                    状态：<i class="fa fa-check-circle" aria-hidden="true">&nbsp; </i>
+                                </th:block>
+                                <th:block th:unless="${ssr.valid}">
+                                    状态：<i class="fa fa-times-circle" aria-hidden="true">&nbsp; </i>
+                                </th:block>
+                            </span>
+                            <span class="badge badge-info">
+                                账号数量：<th:block th:text="${#lists.size(ssr.shadowSocksSet)}"></th:block>
+                            </span>
+                            <span class="badge badge-warning">
+                                <th:block th:text="${ssr.targetURL}"></th:block>
+                            </span>
+
+                            <!--<span class="badge badge-pill badge-info">账号数量：<th:block th:text="${#lists.size(ssr.shadowSocksSet)}"></th:block></span>-->
                         </a>
                     </div>
                 </li>
@@ -148,9 +157,10 @@
                                 </dd>
                             </dl>
                         </div>
-                        <a th:href="@{/createQRCode(width=350,height=350,text=${ssrd.link})}" target="_blank"
-                           class="btn btn-secondary btn-block btn-sm">
-                            <i class="fa fa-qrcode" aria-hidden="true"></i> &nbsp; 二维码 &nbsp; &raquo;</a>
+                        <button class="btn btn-secondary btn-block btn-sm"
+                                th:onclick="${'showImg(''' + ssrd.link + ''')'}">
+                            <i class="fa fa-qrcode" aria-hidden="true"></i> &nbsp; 二维码 &nbsp; &raquo;
+                        </button>
                     </div>
                     <!--<div class="card-footer"></div>-->
                 </div>
@@ -170,18 +180,67 @@
     </div>
 </footer>
 
+
+<!-- 二维码图片 -->
+<div class="modal fade" id="qrModal" tabindex="-1" role="dialog" aria-labelledby="二维码" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">二维码</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
+                            <div class="text-center">
+                                <img id="img" class="img-fluid"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="form-group col-md-9">
+                            <label for="ssrLink" class="col-form-label sr-only">连接:</label>
+                            <input id="ssrLink" readonly="readonly" type="text" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">复制连接</button>
+            </div>-->
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
 <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
-<script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
-        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"
+        integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
         crossorigin="anonymous"></script>
 <!--<script src="https://cdn.bootcss.com/holder/2.9.4/holder.min.js"></script>-->
 <script src="https://buttons.github.io/buttons.js"></script>
 <script th:src="@{/js/common.js}"></script>
 
+<script type="text/javascript" th:inline="javascript">
+    //<![CDATA[
+
+    // 显示二维码
+    function showImg(link) {
+        // console.log(link);
+        $('#img').attr('src', '/createQRCode?width=350&height=350&text=' + link);
+        $('#ssrLink').val(link);
+        $('#qrModal').modal('show');
+    }
+
+    //]]>
+</script>
 </body>
 </html>
