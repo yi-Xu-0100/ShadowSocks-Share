@@ -12,16 +12,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Controller
@@ -64,8 +67,19 @@ public class MainController {
 	 */
 	@RequestMapping(value = "/createQRCode")
 	@ResponseBody
-	public ResponseEntity<byte[]> createQRCode(String text, int width, int height) throws IOException, WriterException {
-		return ResponseEntity.ok().contentType(MediaType.parseMediaType(MediaType.IMAGE_PNG_VALUE)).body(shadowSocksSerivceImpl.createQRCodeImage(text, width, height));
+	public ResponseEntity<byte[]> createQRCode(long id, String text, int width, int height, WebRequest request) throws IOException, WriterException {
+		// 缓存未失效时直接返回
+		if (request.checkNotModified(id))
+			return ResponseEntity.ok()
+					.contentType(MediaType.parseMediaType(MediaType.IMAGE_PNG_VALUE))
+					.cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS))
+					.eTag(String.valueOf(id))
+					.body(null);
+		return ResponseEntity.ok()
+				.contentType(MediaType.parseMediaType(MediaType.IMAGE_PNG_VALUE))
+				.cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS))
+				.eTag(String.valueOf(id))
+				.body(shadowSocksSerivceImpl.createQRCodeImage(text, width, height));
 	}
 
 	@RequestMapping(value = "/count")

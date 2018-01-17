@@ -158,7 +158,7 @@
                             </dl>
                         </div>
                         <button class="btn btn-secondary btn-block btn-sm"
-                                th:onclick="${'showImg(''' + ssrd.link + ''')'}">
+                                th:onclick="${'showImg(''' + ssrd.id + ''',''' + ssrd.link + ''')'}">
                             <i class="fa fa-qrcode" aria-hidden="true"></i> &nbsp; 二维码 &nbsp; &raquo;
                         </button>
                     </div>
@@ -233,9 +233,9 @@
     //<![CDATA[
 
     // 显示二维码
-    function showImg(link) {
+    function showImg(id, link) {
         // console.log(link);
-        $('#img').attr('src', '/createQRCode?width=350&height=350&text=' + link);
+        $('#img').attr('src', '/createQRCode?width=350&height=350&id=' + id + '&text=' + link);
         $('#ssrLink').val(link);
         $('#qrModal').modal('show');
     }
