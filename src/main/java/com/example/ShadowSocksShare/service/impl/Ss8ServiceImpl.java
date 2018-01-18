@@ -42,6 +42,7 @@ public class Ss8ServiceImpl extends ShadowSocksCrawlerService {
 				ShadowSocksDetailsEntity ss = parseURL(ssURL);
 				ss.setValid(false);
 				ss.setValidTime(new Date());
+				ss.setTitle(document.title());
 				ss.setRemarks(TARGET_URL);
 				ss.setGroup("ShadowSocks-Share");
 

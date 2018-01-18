@@ -60,6 +60,7 @@ public class FreeSSRCrawlerServiceImpl extends ShadowSocksCrawlerService {
 						ShadowSocksDetailsEntity ss = new ShadowSocksDetailsEntity(server, server_port, password, method, SS_PROTOCOL, SS_OBFS);
 						ss.setValid(false);
 						ss.setValidTime(new Date());
+						ss.setTitle(document.title());
 						ss.setRemarks(TARGET_URL);
 						ss.setGroup("ShadowSocks-Share");
 

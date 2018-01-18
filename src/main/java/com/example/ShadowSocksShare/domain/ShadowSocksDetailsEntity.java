@@ -69,6 +69,9 @@ public class ShadowSocksDetailsEntity implements Serializable {
 	@Column
 	private Date validTime;        // 有效性验证时间
 
+	@Column
+	private String title;		// 网站名
+
 	public String getLink() {
 		// 104.236.187.174:1118:auth_sha1_v4:chacha20:tls1.2_ticket_auth:ZGFzamtqZGFr/?obfsparam=&remarks=MTExOCDml6fph5HlsbEgMTDkurogMTAwRyBTU1I&group=Q2hhcmxlcyBYdQ
 		StringBuilder link = new StringBuilder();
