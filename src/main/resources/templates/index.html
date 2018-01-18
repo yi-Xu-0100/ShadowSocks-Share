@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="zh-CN">
 <head>
     <title th:text="#{app.title}"></title>
 
@@ -157,10 +157,21 @@
                                 </dd>
                             </dl>
                         </div>
-                        <button class="btn btn-secondary btn-block btn-sm"
-                                th:onclick="${'showImg(''' + ssrd.id + ''',''' + ssrd.title + ''',''' + ssrd.link + ''')'}">
-                            <i class="fa fa-qrcode" aria-hidden="true"></i> &nbsp; 二维码 &nbsp; &raquo;
-                        </button>
+
+                        <div class="text-center">
+                            <button type="button" class="btn btn-sm btn-secondary"
+                                    th:onclick="${'showImg(''' + ssrd.id + ''',''' + ssrd.title + ''',''' + ssrd.link + ''')'}">
+                                <i class="fa fa-qrcode" aria-hidden="true"></i> &nbsp; 二维码 &nbsp; &raquo;
+                            </button>
+                            <button type="button" class="btn btn-sm btn-secondary"
+                                    th:onclick="${'showLink(''' + ssrd.id + ''',''' + ssrd.title + ''',''' + ssrd.link + ''')'}">
+                                <i class="fa fa-link" aria-hidden="true"></i> &nbsp; 连接 &nbsp; &raquo;
+                            </button>
+                            <button type="button" class="btn btn-sm btn-secondary"
+                                    th:onclick="${'showLink(''' + ssrd.id + ''',''' + ssrd.title + ''',''' + ssrd.jsonStr + ''')'}">
+                                <i class="fa fa-code" aria-hidden="true"></i> &nbsp; JSON &nbsp; &raquo;
+                            </button>
+                        </div>
                     </div>
                     <!--<div class="card-footer"></div>-->
                 </div>
@@ -200,13 +211,35 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row justify-content-center">
+                    <!--<div class="row justify-content-center">
                         <div class="form-group col-md-9">
                             <label for="ssrLink" class="col-form-label sr-only">连接:</label>
                             <input id="ssrLink" readonly="readonly" type="text" class="form-control"/>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
+            </div>
+            <!--<div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">复制连接</button>
+            </div>-->
+        </div>
+    </div>
+</div>
+
+
+<!-- link、json -->
+<div class="modal fade" id="linkModal" tabindex="-1" role="dialog" aria-labelledby="二维码" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle2"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <pre id="modalBody"></pre>
             </div>
             <!--<div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
@@ -239,6 +272,14 @@
         $('#img').attr('src', '/createQRCode?width=350&height=350&id=' + id + '&text=' + link);
         $('#ssrLink').val(link);
         $('#qrModal').modal('show');
+    }
+
+    // 显示 link、json
+    function showLink(id, title, text) {
+        // console.log(link);
+        $('#modalTitle2').text(title);
+        $('#modalBody').text(text);
+        $('#linkModal').modal('show');
     }
 
     //]]>

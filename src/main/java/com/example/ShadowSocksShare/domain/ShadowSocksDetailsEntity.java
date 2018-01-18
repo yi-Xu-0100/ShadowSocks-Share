@@ -1,5 +1,6 @@
 package com.example.ShadowSocksShare.domain;
 
+import com.example.ShadowSocksShare.common.JsonUtils;
 import lombok.*;
 import org.apache.commons.codec.binary.Base64;
 
@@ -7,6 +8,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * ssr 信息
@@ -70,7 +73,26 @@ public class ShadowSocksDetailsEntity implements Serializable {
 	private Date validTime;        // 有效性验证时间
 
 	@Column
-	private String title;		// 网站名
+	private String title;        // 网站名
+
+	public String getJsonStr() {
+		// { "server": "202.91.34.32", "server_ipv6": "::", "server_port": 443, "local_address": "127.0.0.1", "local_port": 1080, "password": "123456", "group": "Charles Xu", "obfs": "tls1.2_ticket_auth", "method": "chacha20", "ssr_protocol": "auth_aes128_sha1", "obfsparam": "", "protoparam": "" }
+		Map<String, Object> json = new HashMap();
+		json.put("server", server);
+		json.put("server_ipv6", "::");
+		json.put("server_port", server_port);
+		json.put("local_address", "127.0.0.1");
+		json.put("local_port", 1080);
+		json.put("password", password);
+
+		json.put("group", group);
+		json.put("obfs", obfs);
+		json.put("method", method);
+		json.put("ssr_protocol", protocol);
+		json.put("obfsparam", obfs);
+
+		return JsonUtils.toJsonString(json);
+	}
 
 	public String getLink() {
 		// 104.236.187.174:1118:auth_sha1_v4:chacha20:tls1.2_ticket_auth:ZGFzamtqZGFr/?obfsparam=&remarks=MTExOCDml6fph5HlsbEgMTDkurogMTAwRyBTU1I&group=Q2hhcmxlcyBYdQ
