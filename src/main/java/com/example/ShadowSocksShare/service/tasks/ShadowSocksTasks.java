@@ -36,27 +36,27 @@ public class ShadowSocksTasks {
 	@Qualifier("freeSSRCrawlerServiceImpl")
 	private ShadowSocksCrawlerService freeSSRCrawlerServiceImpl;                // https://global.ishadowx.net/
 
-	@Scheduled(cron = "0 10 */3 * * ?")
+	@Scheduled(cron = "0 10 0/3 * * ?")
 	public void iShadowCrawler() {
 		shadowSocksSerivce.crawlerAndSave(iShadowCrawlerServiceImpl);
 	}
 
-	@Scheduled(cron = "0 10 */6 * * ?")
+	@Scheduled(cron = "0 10 0/6 * * ?")
 	public void doubCrawler() {
 		shadowSocksSerivce.crawlerAndSave(doubCrawlerServiceImpl);
 	}
 
-	@Scheduled(cron = "0 10 */12 * * ?")
+	@Scheduled(cron = "0 10 0/12 * * ?")
 	public void freeSS_EasyToUseCrawler() {
 		shadowSocksSerivce.crawlerAndSave(freeSS_EasyToUseCrawlerServiceImpl);
 	}
 
-	@Scheduled(cron = "0 10 */4 * * ?")
+	@Scheduled(cron = "0 10 0/4 * * ?")
 	public void ss8Crawler() {
 		shadowSocksSerivce.crawlerAndSave(ss8ServiceImpl);
 	}
 
-	@Scheduled(cron = "0 10 */6 * * ?")
+	@Scheduled(cron = "0 10 0/6 * * ?")
 	public void freeSSRCrawler() {
 		shadowSocksSerivce.crawlerAndSave(freeSSRCrawlerServiceImpl);
 	}
@@ -65,7 +65,7 @@ public class ShadowSocksTasks {
 	 * SS 有效性检查，每 1 小时
 	 */
 	// @Scheduled(cron = "0 */2 * * * ?")
-	@Scheduled(cron = "0 0 */1 * * ?")
+	@Scheduled(cron = "0 0 0/1 * * ?")
 	public void checkValid() {
 		shadowSocksSerivce.checkValid();
 	}
@@ -73,7 +73,7 @@ public class ShadowSocksTasks {
 	/**
 	 * 为防止 herokuapp 休眠，每 10 分钟访问一次
 	 */
-	@Scheduled(cron = "0 */20 * * * ?")
+	@Scheduled(cron = "0 0/20 * * * ?")
 	public void monitor() throws IOException {
 		Jsoup.connect("https://shadowsocks-share.herokuapp.com/count").get();
 	}
