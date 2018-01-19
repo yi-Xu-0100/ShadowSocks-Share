@@ -5,9 +5,9 @@ import com.example.ShadowSocksShare.domain.ShadowSocksDetailsEntity;
 import com.example.ShadowSocksShare.domain.ShadowSocksEntity;
 import com.example.ShadowSocksShare.service.CountSerivce;
 import com.example.ShadowSocksShare.service.ShadowSocksSerivce;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.zxing.WriterException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -56,22 +56,23 @@ public class MainController {
 	 */
 	@RequestMapping("/subscribe")
 	@ResponseBody
-	public String subscribe(boolean valid, @PageableDefault(page = 0, size = 1000, sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable) {
+	public ResponseEntity<String> subscribe(boolean valid, @PageableDefault(page = 0, size = 1000, sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable) {
 		List<ShadowSocksEntity> ssrList = shadowSocksSerivceImpl.findAll(pageable);
-		String ssrLink = shadowSocksSerivceImpl.toSSLink(ssrList, valid);
-		return StringUtils.isNotBlank(ssrLink) ? ssrLink : "无有效 SSR 连接，请稍后重试！";
+		return ResponseEntity.ok()
+				.contentType(MediaType.TEXT_PLAIN)
+				.body(shadowSocksSerivceImpl.toSSLink(ssrList, valid));
 	}
 
 	/**
-	 * 订阅 Json
+	 * 订阅 一条 有效的 Json
 	 */
-	/*@RequestMapping("/subscribeJson")
+	@RequestMapping("/subscribeJson")
 	@ResponseBody
-	public String subscribeJson() {
-		List<ShadowSocksEntity> ssrList = shadowSocksSerivceImpl.findAll(pageable);
-		String ssrLink = shadowSocksSerivceImpl.toSSLink(ssrList, valid);
-		return StringUtils.isNotBlank(ssrLink) ? ssrLink : "无有效 SSR 连接，请稍后重试！";
-	}*/
+	public ResponseEntity<String> subscribeJson() throws JsonProcessingException {
+		return ResponseEntity.ok()
+				.contentType(MediaType.TEXT_PLAIN)
+				.body(shadowSocksSerivceImpl.findFirstByRandom().getJsonStr());
+	}
 
 	/**
 	 * 二维码

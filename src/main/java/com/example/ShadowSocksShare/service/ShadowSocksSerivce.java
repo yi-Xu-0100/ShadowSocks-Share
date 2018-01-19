@@ -1,6 +1,7 @@
 package com.example.ShadowSocksShare.service;
 
 
+import com.example.ShadowSocksShare.domain.ShadowSocksDetailsEntity;
 import com.example.ShadowSocksShare.domain.ShadowSocksEntity;
 import com.google.zxing.WriterException;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,11 @@ public interface ShadowSocksSerivce {
 	 * 3. 查询 SS 信息
 	 */
 	List<ShadowSocksEntity> findAll(Pageable pageable);
+
+	/**
+	 * 随机查询一条可用 ss 信息
+	 */
+	ShadowSocksDetailsEntity findFirstByRandom();
 
 	/**
 	 * 3. 生成 SSR 连接

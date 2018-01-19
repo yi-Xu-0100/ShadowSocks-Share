@@ -76,6 +76,14 @@ public class ShadowSocksSerivceImpl implements ShadowSocksSerivce {
 	}
 
 	/**
+	 * 随机查询一条可用 ss 信息
+	 */
+	@Override
+	public ShadowSocksDetailsEntity findFirstByRandom() {
+		return shadowSocksDetailsRepository.findFirstByValidOrderByRandomAsc();
+	}
+
+	/**
 	 * 3. 生成 SSR 订阅连接
 	 */
 	@Override

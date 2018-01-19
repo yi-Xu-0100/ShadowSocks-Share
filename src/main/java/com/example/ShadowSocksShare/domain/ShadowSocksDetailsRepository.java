@@ -4,6 +4,7 @@ package com.example.ShadowSocksShare.domain;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -14,8 +15,11 @@ import java.util.Date;
 @Repository
 public interface ShadowSocksDetailsRepository extends JpaRepository<ShadowSocksDetailsEntity, Long> {
 
-	/*@Query("select h.name as name, avg(r.rating) as averageRating  from Hotel h left outer join h.reviews r  group by h")
-	Page<ShadowSocksDetailsEntity> findByCity(Pageable pageable);*/
+	/**
+	 * 随机查询一条可用 ss 信息
+	 */
+	@Query(value = "SELECT * FROM SHADOW_SOCKS_DETAILS_ENTITY where valid = true ORDER BY RAND() limit 1", nativeQuery = true)
+	ShadowSocksDetailsEntity findFirstByValidOrderByRandomAsc();
 
 	/**
 	 * <= validTime
