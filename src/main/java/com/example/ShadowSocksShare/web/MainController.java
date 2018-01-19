@@ -63,6 +63,17 @@ public class MainController {
 	}
 
 	/**
+	 * 订阅 Json
+	 */
+	/*@RequestMapping("/subscribeJson")
+	@ResponseBody
+	public String subscribeJson() {
+		List<ShadowSocksEntity> ssrList = shadowSocksSerivceImpl.findAll(pageable);
+		String ssrLink = shadowSocksSerivceImpl.toSSLink(ssrList, valid);
+		return StringUtils.isNotBlank(ssrLink) ? ssrLink : "无有效 SSR 连接，请稍后重试！";
+	}*/
+
+	/**
 	 * 二维码
 	 */
 	@RequestMapping(value = "/createQRCode")

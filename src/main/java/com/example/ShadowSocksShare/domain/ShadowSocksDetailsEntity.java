@@ -1,6 +1,7 @@
 package com.example.ShadowSocksShare.domain;
 
-import com.example.ShadowSocksShare.common.JsonUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 import org.apache.commons.codec.binary.Base64;
 
@@ -75,23 +76,18 @@ public class ShadowSocksDetailsEntity implements Serializable {
 	@Column
 	private String title;        // 网站名
 
-	public String getJsonStr() {
-		// { "server": "202.91.34.32", "server_ipv6": "::", "server_port": 443, "local_address": "127.0.0.1", "local_port": 1080, "password": "123456", "group": "Charles Xu", "obfs": "tls1.2_ticket_auth", "method": "chacha20", "ssr_protocol": "auth_aes128_sha1", "obfsparam": "", "protoparam": "" }
+	public String getJsonStr() throws JsonProcessingException {
 		Map<String, Object> json = new HashMap();
 		json.put("server", server);
-		json.put("server_ipv6", "::");
 		json.put("server_port", server_port);
 		json.put("local_address", "127.0.0.1");
 		json.put("local_port", 1080);
 		json.put("password", password);
-
 		json.put("group", group);
 		json.put("obfs", obfs);
 		json.put("method", method);
 		json.put("ssr_protocol", protocol);
-		json.put("obfsparam", obfs);
-
-		return JsonUtils.toJsonString(json);
+		return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(json);
 	}
 
 	public String getLink() {

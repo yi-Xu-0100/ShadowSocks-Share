@@ -163,12 +163,12 @@
                                     th:onclick="${'showImg(''' + ssrd.id + ''',''' + ssrd.title + ''',''' + ssrd.link + ''')'}">
                                 <i class="fa fa-qrcode" aria-hidden="true"></i> &nbsp; 二维码 &nbsp; &raquo;
                             </button>
-                            <button type="button" class="btn btn-sm btn-secondary"
-                                    th:onclick="${'showLink(''' + ssrd.id + ''',''' + ssrd.title + ''',''' + ssrd.link + ''')'}">
+                            <button type="button" class="btn btn-sm btn-secondary" th:attr="data-title=${ssrd.title},data-value=${ssrd.link}"
+                                    onclick="showLink(this)">
                                 <i class="fa fa-link" aria-hidden="true"></i> &nbsp; 连接 &nbsp; &raquo;
                             </button>
-                            <button type="button" class="btn btn-sm btn-secondary"
-                                    th:onclick="${'showLink(''' + ssrd.id + ''',''' + ssrd.title + ''',''' + ssrd.jsonStr + ''')'}">
+                            <button type="button" class="btn btn-sm btn-secondary" th:attr="data-title=${ssrd.title},data-value=${ssrd.jsonStr}"
+                                    onclick="showLink(this)">
                                 <i class="fa fa-code" aria-hidden="true"></i> &nbsp; JSON &nbsp; &raquo;
                             </button>
                         </div>
@@ -211,12 +211,6 @@
                             </div>
                         </div>
                     </div>
-                    <!--<div class="row justify-content-center">
-                        <div class="form-group col-md-9">
-                            <label for="ssrLink" class="col-form-label sr-only">连接:</label>
-                            <input id="ssrLink" readonly="readonly" type="text" class="form-control"/>
-                        </div>
-                    </div>-->
                 </div>
             </div>
             <!--<div class="modal-footer">
@@ -241,10 +235,6 @@
             <div class="modal-body">
                 <pre id="modalBody"></pre>
             </div>
-            <!--<div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">复制连接</button>
-            </div>-->
         </div>
     </div>
 </div>
@@ -275,10 +265,10 @@
     }
 
     // 显示 link、json
-    function showLink(id, title, text) {
-        // console.log(link);
-        $('#modalTitle2').text(title);
-        $('#modalBody').text(text);
+    function showLink(obj) {
+        // console.log($(obj).data('json'));
+        $('#modalTitle2').text($(obj).data('title'));
+        $('#modalBody').text($(obj).attr('data-value'));
         $('#linkModal').modal('show');
     }
 
