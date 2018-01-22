@@ -3,13 +3,36 @@ package com.example.ShadowSocksShare.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 
 
 @Slf4j
 public class CodeTest {
+
+	@Test
+	public void testGetDocument() throws IOException {
+		String url = MessageFormat.format("https://free-ss.site/ss.json?_={0}", String.valueOf(System.currentTimeMillis()));
+
+		Document document = Jsoup.connect(url)
+				.userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36")
+				.referrer("https://free-ss.site/")
+				.ignoreContentType(true)
+				.ignoreHttpErrors(true)
+				.followRedirects(true)
+				.method(Connection.Method.GET)
+				.timeout(60 * 1000)
+				// .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 1080)))
+				.get();
+
+		log.debug("==========>{}", document.html());
+	}
 
 	@Test
 	public void test() {
