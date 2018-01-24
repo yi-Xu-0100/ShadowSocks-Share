@@ -1,37 +1,44 @@
 package com.example.ShadowSocksShare.service;
 
 import com.example.ShadowSocksShare.BaseTest;
-import com.example.ShadowSocksShare.domain.ShadowSocksDetailsEntity;
 import com.example.ShadowSocksShare.domain.ShadowSocksEntity;
-import com.example.ShadowSocksShare.domain.ShadowSocksRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.Date;
-import java.util.HashSet;
 
 @Slf4j
 public class ShadowSocksCrawlerServiceTest extends BaseTest {
 	@Autowired
 	private MockMvc mvc;
+
 	@Autowired
-	private ShadowSocksCrawlerService iShadowCrawlerServiceImpl;
+	@Qualifier("iShadowCrawlerServiceImpl")
+	private ShadowSocksCrawlerService iShadowCrawlerServiceImpl;    // ishadow
 	@Autowired
-	private ShadowSocksRepository shadowSocksRepository;
+	@Qualifier("doubCrawlerServiceImpl")
+	private ShadowSocksCrawlerService doubCrawlerServiceImpl;                // https://doub.io
+	@Autowired
+	@Qualifier("freeSS_EasyToUseCrawlerServiceImpl")
+	private ShadowSocksCrawlerService freeSS_EasyToUseCrawlerServiceImpl;                // https://freess.cx/#portfolio-preview
+	@Autowired
+	@Qualifier("ss8ServiceImpl")
+	private ShadowSocksCrawlerService ss8ServiceImpl;                // https://en.ss8.fun/
+	@Autowired
+	@Qualifier("freeSSRCrawlerServiceImpl")
+	private ShadowSocksCrawlerService freeSSRCrawlerServiceImpl;                // https://global.ishadowx.net/
+	@Autowired
+	@Qualifier("free_ssServiceImpl")
+	private ShadowSocksCrawlerService free_ssServiceImpl;                // https://free-ss.site/
+	@Autowired
+	@Qualifier("ssrBlueCrawlerServiceImpl")
+	private ShadowSocksCrawlerService ssrBlueCrawlerServiceImpl;                // http://www.ssr.blue
 
 
-	public void aa() {
-		ShadowSocksEntity socksEntity = new ShadowSocksEntity("targetURL", "title", true, new Date());
-		socksEntity.setShadowSocksSet(new HashSet<>());
-
-		ShadowSocksDetailsEntity entity = new ShadowSocksDetailsEntity("216.189.158.147", 5307, "mm", "chacha20", "auth_aes128_sha1", "tls1.2_ticket_auth");
-		entity.setValid(true);
-		entity.setRemarks("本账号来自:doub.io/sszhfx/镜像域名:doub.bid/sszhfx/");
-		entity.setGroup("");
-
-		socksEntity.getShadowSocksSet().add(entity);
-
-		shadowSocksRepository.save(socksEntity);
+	@Test
+	public void testDoubCrawlerService() {
+		ShadowSocksEntity entity = doubCrawlerServiceImpl.getShadowSocks();
+		log.debug("========>{}", entity);
 	}
 }

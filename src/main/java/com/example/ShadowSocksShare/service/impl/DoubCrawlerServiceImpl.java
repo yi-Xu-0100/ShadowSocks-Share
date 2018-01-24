@@ -3,14 +3,13 @@ package com.example.ShadowSocksShare.service.impl;
 import com.example.ShadowSocksShare.domain.ShadowSocksDetailsEntity;
 import com.example.ShadowSocksShare.service.ShadowSocksCrawlerService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * doub
@@ -21,12 +20,86 @@ import java.util.Set;
 public class DoubCrawlerServiceImpl extends ShadowSocksCrawlerService {
 	// 目标网站 URL
 	private static final String TARGET_URL = "https://doub.io/sszhfx/";
+	// 协议
+	private final static Map<String, String> protocolMap = new HashMap() {
+		{
+			put("1", "origin");
+			put("2", "verify_deflate");
+			put("3", "auth_sha1_v4");
+			put("4", "auth_aes128_md5");
+			put("5", "auth_aes128_sha1");
+			put("6", "auth_chain_a");
+			put("7", "auth_chain_b");
+		}
+	};
+	// 混淆
+	private final static Map<String, String> obfsMap = new HashMap() {
+		{
+			put("1", "plain");
+			put("2", "http_simple");
+			put("3", "http_post");
+			put("4", "random_head");
+			put("5", "tls1.2_ticket_auth");
+			put("6", "tls1.2_ticket_fastauth");
+		}
+	};
 
 	/**
 	 * 网页内容解析 ss 信息
 	 */
 	@Override
 	protected Set<ShadowSocksDetailsEntity> parse(Document document) {
+		Elements tables = document.select("table");
+
+		if (!tables.isEmpty()) {
+			// 取第一个 table
+			Element table = tables.get(0);
+			// 所有行（首行为表头）
+			Elements rows = table.select("tr");
+			if (rows.size() > 2) {
+
+				Set<ShadowSocksDetailsEntity> set = new HashSet(rows.size() - 1);
+				// 从第二行读取
+				for (int i = 1; i < rows.size(); i++) {
+					Elements cols = rows.get(i).select("td");
+					if (cols.size() >= 5) {
+						// 服务器地址 / 服务器IP / 端口 / 协议|混淆 / 加密方式 / 提供者 / 二维码
+						// 计算 协议|混淆
+						String strs[] = StringUtils.deleteWhitespace(cols.get(3).text()).split("\\|");
+						// 协议|混淆
+						if (strs.length >= 2) {
+							String protocol = protocolMap.get(strs[0].trim());
+							String obfs = obfsMap.get(strs[1].trim());
+
+							// IPV4、协议、混淆 不为空
+							if (cols.get(1).text().contains(".") && StringUtils.isNotBlank(protocol) && StringUtils.isNotBlank(obfs)) {
+								ShadowSocksDetailsEntity ss = new ShadowSocksDetailsEntity(cols.get(1).text(), Integer.parseInt(cols.get(2).text()), cols.get(4).text(), "doub.io/sszhfx/*doub.bid/sszhfx/*" + cols.get(2).text(), protocol, obfs);
+								ss.setValid(false);
+								ss.setValidTime(new Date());
+								ss.setTitle(document.title());
+								ss.setRemarks(TARGET_URL);
+								ss.setGroup("ShadowSocks-Share");
+
+								// 测试网络
+								if (isReachable(ss))
+									ss.setValid(true);
+
+								// 无论是否可用都入库
+								set.add(ss);
+
+								log.debug("*************** 第 {} 条 ***************{}{}", set.size(), System.lineSeparator(), ss);
+							}
+						}
+					}
+				}
+				return set;
+			}
+		}
+		return new HashSet<>();
+	}
+
+	// 解析 连接方式
+	/*protected Set<ShadowSocksDetailsEntity> parse(Document document) {
 		Elements ssList = document.select("a.dl1");
 
 		Set<ShadowSocksDetailsEntity> set = new HashSet(ssList.size());
@@ -59,7 +132,7 @@ public class DoubCrawlerServiceImpl extends ShadowSocksCrawlerService {
 			}
 		}
 		return set;
-	}
+	}*/
 
 	/**
 	 * 目标网站 URL
