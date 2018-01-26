@@ -73,7 +73,7 @@ public class DoubCrawlerServiceImpl extends ShadowSocksCrawlerService {
 
 							// IPV4、协议、混淆 不为空
 							if (cols.get(1).text().contains(".") && StringUtils.isNotBlank(protocol) && StringUtils.isNotBlank(obfs)) {
-								ShadowSocksDetailsEntity ss = new ShadowSocksDetailsEntity(cols.get(1).text(), Integer.parseInt(cols.get(2).text()), cols.get(4).text(), "doub.io/sszhfx/*doub.bid/sszhfx/*" + cols.get(2).text(), protocol, obfs);
+								ShadowSocksDetailsEntity ss = new ShadowSocksDetailsEntity(cols.get(1).text(), Integer.parseInt(cols.get(2).text()), "doub.io/sszhfx/*doub.bid/sszhfx/*" + cols.get(2).text(), cols.get(4).text(), protocol, obfs);
 								ss.setValid(false);
 								ss.setValidTime(new Date());
 								ss.setTitle(document.title());
