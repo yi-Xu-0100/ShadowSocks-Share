@@ -30,6 +30,6 @@ public class ApplicationStartupListener {
 	@EventListener
 	public void handleOrderStateChange(ContextRefreshedEvent contextRefreshedEvent) {
 		log.debug(contextRefreshedEvent.toString());
-		crawlerSet.forEach((service) -> shadowSocksSerivce.crawlerAndSave(service));
+		crawlerSet.parallelStream().forEach((service) -> shadowSocksSerivce.crawlerAndSave(service));
 	}
 }

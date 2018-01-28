@@ -1,6 +1,6 @@
 # ========== 自定义 ==========
 proxy:
-  enable: true
+  enable: false
   server: 127.0.0.1
   port: 1080
 
@@ -14,4 +14,4 @@ spring:
   # Spring 数据库
   datasource:
     username: sa
-    password:
+    password: unrDG0Nb3r4l
