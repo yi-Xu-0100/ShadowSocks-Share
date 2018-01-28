@@ -5,14 +5,17 @@ import com.example.ShadowSocksShare.domain.ShadowSocksEntity;
 import com.example.ShadowSocksShare.service.ShadowSocksCrawlerService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gargoylesoftware.htmlunit.*;
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
+import com.gargoylesoftware.htmlunit.Page;
+import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -26,10 +29,8 @@ public class Free_ssServiceImpl extends ShadowSocksCrawlerService {
 	private static final String TARGET_URL = "https://free-ss.site/ss.json?_={0}";
 
 	public ShadowSocksEntity getShadowSocks() {
-		// 1. 爬取账号
-
-		String ssListJson = null;
 		try (WebClient webClient = new WebClient(BrowserVersion.CHROME)) {
+			// 1. 爬取账号
 			webClient.getOptions().setJavaScriptEnabled(true);                // 启动JS
 			webClient.setJavaScriptTimeout(10 * 1000);                            // 设置JS执行的超时时间
 			webClient.getOptions().setUseInsecureSSL(true);                    // 忽略ssl认证
@@ -55,50 +56,47 @@ public class Free_ssServiceImpl extends ShadowSocksCrawlerService {
 
 			Page page = button.click();
 
-			ssListJson = page.getWebResponse().getContentAsString();
+			String ssListJson = page.getWebResponse().getContentAsString();
+			// log.debug("========= > ssListJson:{}", ssListJson);
+
+			// 2. 解析 json 生成 ShadowSocksDetailsEntity
+			if (StringUtils.isNotBlank(ssListJson)) {
+				Set<ShadowSocksDetailsEntity> set = null;
+				ObjectMapper mapper = new ObjectMapper();
+				Map<String, List<List<String>>> map = mapper.readValue(ssListJson, new TypeReference<Map<String, List<List<String>>>>() {});
+
+				if (map.containsKey("data")) {
+					List<List<String>> strList = map.get("data");
+					set = new HashSet(strList.size());
+					for (int i = 0; i < strList.size(); i++) {
+						// 100, "144.217.163.62", "4436", "^CT&zd7*Ra", "aes-256-cfb", "09:32:05", "CA"
+						ShadowSocksDetailsEntity ss = new ShadowSocksDetailsEntity(strList.get(i).get(1), Integer.parseInt(strList.get(i).get(2)), strList.get(i).get(3), strList.get(i).get(4), SS_PROTOCOL, SS_OBFS);
+						ss.setValid(false);
+						ss.setValidTime(new Date());
+						ss.setTitle("free-ss.site");
+						ss.setRemarks("https://free-ss.site/");
+						ss.setGroup("ShadowSocks-Share");
+
+						// 测试网络
+						if (isReachable(ss))
+							ss.setValid(true);
+
+						// 无论是否可用都入库
+						set.add(ss);
+
+						log.debug("*************** 第 {} 条 ***************{}{}", i + 1, System.lineSeparator(), ss);
+					}
+				}
+
+				// 3. 生成 ShadowSocksEntity
+				ShadowSocksEntity entity = new ShadowSocksEntity(getTargetURL(), "free-ss.site", true, new Date());
+				entity.setShadowSocksSet(set);
+				return entity;
+			}
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
-
-		// log.debug("========= > ssListJson:{}", ssListJson);
-
-		// 2. 解析 json 生成 ShadowSocksDetailsEntity
-		Set<ShadowSocksDetailsEntity> set = null;
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			Map<String, List<List<String>>> map = mapper.readValue(ssListJson, new TypeReference<Map<String, List<List<String>>>>() {});
-
-			if (map.containsKey("data")) {
-				List<List<String>> strList = map.get("data");
-				set = new HashSet(strList.size());
-				for (int i = 0; i < strList.size(); i++) {
-					// 100, "144.217.163.62", "4436", "^CT&zd7*Ra", "aes-256-cfb", "09:32:05", "CA"
-					ShadowSocksDetailsEntity ss = new ShadowSocksDetailsEntity(strList.get(i).get(1), Integer.parseInt(strList.get(i).get(2)), strList.get(i).get(3), strList.get(i).get(4), SS_PROTOCOL, SS_OBFS);
-					ss.setValid(false);
-					ss.setValidTime(new Date());
-					ss.setTitle("free-ss.site");
-					ss.setRemarks("https://free-ss.site/");
-					ss.setGroup("ShadowSocks-Share");
-
-					// 测试网络
-					if (isReachable(ss))
-						ss.setValid(true);
-
-					// 无论是否可用都入库
-					set.add(ss);
-
-					log.debug("*************** 第 {} 条 ***************{}{}", i + 1, System.lineSeparator(), ss);
-				}
-			}
-		} catch (IOException e) {
-			log.error(e.getMessage(), e);
-		}
-
-		// 3. 生成 ShadowSocksEntity
-		ShadowSocksEntity entity = new ShadowSocksEntity(getTargetURL(), "free-ss.site", true, new Date());
-		entity.setShadowSocksSet(set);
-		return entity;
-		// return new ShadowSocksEntity(getTargetURL(), "", false, new Date());
+		return new ShadowSocksEntity(getTargetURL(), "", false, new Date());
 	}
 
 	/**
