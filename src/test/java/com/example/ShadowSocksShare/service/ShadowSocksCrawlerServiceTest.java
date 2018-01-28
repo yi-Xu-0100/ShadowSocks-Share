@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.IOException;
+
 @Slf4j
 public class ShadowSocksCrawlerServiceTest extends BaseTest {
 	@Autowired
@@ -40,5 +42,11 @@ public class ShadowSocksCrawlerServiceTest extends BaseTest {
 	public void testDoubCrawlerService() {
 		ShadowSocksEntity entity = doubCrawlerServiceImpl.getShadowSocks();
 		log.debug("========>{}", entity);
+	}
+
+	@Test
+	public void testFree_ssService() throws IOException {
+		free_ssServiceImpl.getShadowSocks();
+		// log.debug("========>{}", entity);
 	}
 }

@@ -47,6 +47,7 @@ https://doub.io/sszhfx/ | 是 | 从 0 点 10 分开始，每 6 小时
 https://freess.cx/ | 是 | 从 0 点 10 分开始，每 12 小时
 https://en.ss8.fun/ | 是 | 从 0 点 10 分开始，每 4 小时
 https://freessr.win/ | 是 | 从 0 点 10 分开始，每 6 小时
+https://free-ss.site/ | 是 | 从 0 点 10 分开始，每 6 小时
 http://www.ssr.blue/ | 是 | 从 0 点 10 分开始，每 3 小时
 
 
@@ -61,5 +62,4 @@ ShadowSocksShare-OpenShift [Heroku 部署方法](https://github.com/the0demiurge
 #### TO DO
 
 1. 计划支持下列站点：
-    1. https://free-ss.site/
     1. https://plus.google.com/communities/104092405342699579599

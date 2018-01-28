@@ -35,8 +35,8 @@ public class ShadowSocksTasks {
 	@Autowired
 	@Qualifier("freeSSRCrawlerServiceImpl")
 	private ShadowSocksCrawlerService freeSSRCrawlerServiceImpl;                // https://global.ishadowx.net/
-	/*@Autowired
-	@Qualifier("free_ssServiceImpl")*/
+	@Autowired
+	@Qualifier("free_ssServiceImpl")
 	private ShadowSocksCrawlerService free_ssServiceImpl;                // https://free-ss.site/
 	@Autowired
 	@Qualifier("ssrBlueCrawlerServiceImpl")
@@ -67,10 +67,10 @@ public class ShadowSocksTasks {
 		shadowSocksSerivce.crawlerAndSave(freeSSRCrawlerServiceImpl);
 	}
 
-	/*@Scheduled(cron = "0 10 0/6 * * ?")
+	@Scheduled(cron = "0 10 0/6 * * ?")
 	public void free_ssCrawler() {
 		shadowSocksSerivce.crawlerAndSave(free_ssServiceImpl);
-	}*/
+	}
 
 	@Scheduled(cron = "0 10 0/3 * * ?")
 	public void ssrBlueCrawler() {

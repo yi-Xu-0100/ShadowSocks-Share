@@ -35,9 +35,9 @@ public abstract class ShadowSocksCrawlerService {
 	protected static final String SS_PROTOCOL = "origin";
 	protected static final String SS_OBFS = "plain";
 	// 目标网站请求超时时间（60 秒）
-	private static final int TIME_OUT = 60 * 1000;
+	protected static final int TIME_OUT = 60 * 1000;
 	// 测试网络超时时间（3 秒）
-	private static final int SOCKET_TIME_OUT = 3 * 1000;
+	protected static final int SOCKET_TIME_OUT = 3 * 1000;
 
 	/**
 	 * 网络连通性测试
@@ -55,7 +55,7 @@ public abstract class ShadowSocksCrawlerService {
 	/**
 	 * 请求目标 URL 获取 Document
 	 */
-	private Document getDocument() throws IOException {
+	protected Document getDocument() throws IOException {
 		Document document;
 		try {
 			document = Jsoup.connect(getTargetURL())
@@ -63,6 +63,7 @@ public abstract class ShadowSocksCrawlerService {
 					.referrer("https://www.google.com/")
 					.ignoreContentType(true)
 					.followRedirects(true)
+					.ignoreHttpErrors(true)
 					.timeout(TIME_OUT)
 					// .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 1080)))
 					.get();
