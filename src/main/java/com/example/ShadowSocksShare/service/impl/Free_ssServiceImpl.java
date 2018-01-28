@@ -56,9 +56,7 @@ public class Free_ssServiceImpl extends ShadowSocksCrawlerService {
 			Page page = button.click();
 
 			ssListJson = page.getWebResponse().getContentAsString();
-		} catch (IOException e) {
-			log.error(e.getMessage(), e);
-		} catch (FailingHttpStatusCodeException e) {
+		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
 
