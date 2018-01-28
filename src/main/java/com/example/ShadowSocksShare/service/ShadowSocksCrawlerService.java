@@ -8,6 +8,7 @@ import com.google.zxing.common.HybridBinarizer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -52,21 +53,25 @@ public abstract class ShadowSocksCrawlerService {
 		return false;
 	}
 
+
 	/**
 	 * 请求目标 URL 获取 Document
 	 */
 	protected Document getDocument() throws IOException {
 		Document document;
 		try {
-			document = Jsoup.connect(getTargetURL())
+			Connection connection = Jsoup.connect(getTargetURL())
 					.userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.108 Safari/537.36")
 					.referrer("https://www.google.com/")
 					.ignoreContentType(true)
 					.followRedirects(true)
 					.ignoreHttpErrors(true)
-					.timeout(TIME_OUT)
-					// .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 1080)))
-					.get();
+					.timeout(TIME_OUT);
+			if (isProxyEnable())
+				connection.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(getProxyHost(), getProxyPort())));
+
+			document = connection.get();
+
 		} catch (IOException e) {
 			throw new IOException("请求[" + getTargetURL() + "]异常：" + e.getMessage(), e);
 		}
@@ -152,4 +157,19 @@ public abstract class ShadowSocksCrawlerService {
 	 * 目标网站 URL
 	 */
 	protected abstract String getTargetURL();
+
+	/**
+	 * 访问目标网站，是否启动代理
+	 */
+	protected abstract boolean isProxyEnable();
+
+	/**
+	 * 代理地址
+	 */
+	protected abstract String getProxyHost();
+
+	/**
+	 * 代理端口
+	 */
+	protected abstract int getProxyPort();
 }

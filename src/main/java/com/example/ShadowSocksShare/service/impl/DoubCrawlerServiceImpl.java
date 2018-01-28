@@ -2,11 +2,13 @@ package com.example.ShadowSocksShare.service.impl;
 
 import com.example.ShadowSocksShare.domain.ShadowSocksDetailsEntity;
 import com.example.ShadowSocksShare.service.ShadowSocksCrawlerService;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -18,6 +20,7 @@ import java.util.*;
 @Slf4j
 @Service
 public class DoubCrawlerServiceImpl extends ShadowSocksCrawlerService {
+
 	// 目标网站 URL
 	private static final String TARGET_URL = "https://doub.io/sszhfx/";
 	// 协议
@@ -43,6 +46,19 @@ public class DoubCrawlerServiceImpl extends ShadowSocksCrawlerService {
 			put("6", "tls1.2_ticket_fastauth");
 		}
 	};
+
+	// 访问目标网站，是否启动代理
+	@Value("${proxy.enable}")
+	@Getter
+	private boolean proxyEnable;
+	// 代理地址
+	@Getter
+	@Value("${proxy.host}")
+	private String proxyHost;
+	// 代理端口
+	@Getter
+	@Value("${proxy.port}")
+	private int proxyPort;
 
 	/**
 	 * 网页内容解析 ss 信息

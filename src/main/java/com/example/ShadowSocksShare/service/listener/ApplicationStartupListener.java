@@ -16,6 +16,7 @@ import java.util.Set;
  */
 @Slf4j
 @Component
+// @Profile("prod")
 public class ApplicationStartupListener {
 	@Autowired
 	private ShadowSocksSerivce shadowSocksSerivce;
@@ -30,6 +31,6 @@ public class ApplicationStartupListener {
 	@EventListener
 	public void handleOrderStateChange(ContextRefreshedEvent contextRefreshedEvent) {
 		log.debug(contextRefreshedEvent.toString());
-		crawlerSet.parallelStream().forEach((service) -> shadowSocksSerivce.crawlerAndSave(service));
+		crawlerSet.parallelStream()/*.filter((service) -> !(service instanceof InitService))*/.forEach((service) -> shadowSocksSerivce.crawlerAndSave(service));
 	}
 }

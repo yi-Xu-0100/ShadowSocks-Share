@@ -11,9 +11,11 @@ import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -27,17 +29,33 @@ import java.util.*;
 public class Free_ssServiceImpl extends ShadowSocksCrawlerService {
 	// 目标网站 URL
 	private static final String TARGET_URL = "https://free-ss.site/ss.json?_={0}";
+	// 访问目标网站，是否启动代理
+	@Value("${proxy.enable}")
+	@Getter
+	private boolean proxyEnable;
+	// 代理地址
+	@Getter
+	@Value("${proxy.host}")
+	private String proxyHost;
+	// 代理端口
+	@Getter
+	@Value("${proxy.port}")
+	private int proxyPort;
 
 	public ShadowSocksEntity getShadowSocks() {
 		try (WebClient webClient = new WebClient(BrowserVersion.CHROME)) {
+			// 设置代理
+			/*if (proxyEnable)
+				webClient.getOptions().setProxyConfig(new ProxyConfig(proxyHost, proxyPort));*/
 			// 1. 爬取账号
 			webClient.getOptions().setJavaScriptEnabled(true);                // 启动JS
 			webClient.setJavaScriptTimeout(10 * 1000);                            // 设置JS执行的超时时间
 			webClient.getOptions().setUseInsecureSSL(true);                    // 忽略ssl认证
 			webClient.getOptions().setCssEnabled(false);                    // 禁用Css，可避免自动二次请求CSS进行渲染
 			webClient.getOptions().setThrowExceptionOnScriptError(false);   //运行错误时，不抛出异常
-			webClient.getOptions().setTimeout(SOCKET_TIME_OUT);                // 连接超时时间。如果为0，则无限期等待
+			webClient.getOptions().setTimeout(TIME_OUT);                // 连接超时时间。如果为0，则无限期等待
 			webClient.setAjaxController(new NicelyResynchronizingAjaxController());// 设置Ajax异步
+			webClient.getCookieManager().setCookiesEnabled(true);//开启cookie管理
 
 			webClient.getOptions().setThrowExceptionOnFailingStatusCode(false); // 忽略错误的 Http code
 
@@ -63,7 +81,8 @@ public class Free_ssServiceImpl extends ShadowSocksCrawlerService {
 			if (StringUtils.isNotBlank(ssListJson)) {
 				Set<ShadowSocksDetailsEntity> set = null;
 				ObjectMapper mapper = new ObjectMapper();
-				Map<String, List<List<String>>> map = mapper.readValue(ssListJson, new TypeReference<Map<String, List<List<String>>>>() {});
+				Map<String, List<List<String>>> map = mapper.readValue(ssListJson, new TypeReference<Map<String, List<List<String>>>>() {
+				});
 
 				if (map.containsKey("data")) {
 					List<List<String>> strList = map.get("data");
@@ -96,7 +115,7 @@ public class Free_ssServiceImpl extends ShadowSocksCrawlerService {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
-		return new ShadowSocksEntity("free-ss.site", "free-ss.site", false, new Date());
+		return new ShadowSocksEntity("https://free-ss.site", "free-ss.site", false, new Date());
 	}
 
 	/**

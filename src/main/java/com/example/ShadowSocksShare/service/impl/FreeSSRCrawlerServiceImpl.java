@@ -2,12 +2,14 @@ package com.example.ShadowSocksShare.service.impl;
 
 import com.example.ShadowSocksShare.domain.ShadowSocksDetailsEntity;
 import com.example.ShadowSocksShare.service.ShadowSocksCrawlerService;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -24,6 +26,18 @@ import java.util.Set;
 public class FreeSSRCrawlerServiceImpl extends ShadowSocksCrawlerService {
 	// 目标网站 URL
 	private static final String TARGET_URL = "https://freessr.win/";
+	// 访问目标网站，是否启动代理
+	@Value("${proxy.enable}")
+	@Getter
+	private boolean proxyEnable;
+	// 代理地址
+	@Getter
+	@Value("${proxy.host}")
+	private String proxyHost;
+	// 代理端口
+	@Getter
+	@Value("${proxy.port}")
+	private int proxyPort;
 
 	/**
 	 * 网页内容解析 ss 信息
