@@ -89,14 +89,14 @@ public class Free_ssServiceImpl extends ShadowSocksCrawlerService {
 				}
 
 				// 3. 生成 ShadowSocksEntity
-				ShadowSocksEntity entity = new ShadowSocksEntity(getTargetURL(), "free-ss.site", true, new Date());
+				ShadowSocksEntity entity = new ShadowSocksEntity("free-ss.site", "free-ss.site", true, new Date());
 				entity.setShadowSocksSet(set);
 				return entity;
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
-		return new ShadowSocksEntity(getTargetURL(), "", false, new Date());
+		return new ShadowSocksEntity("free-ss.site", "free-ss.site", false, new Date());
 	}
 
 	/**
