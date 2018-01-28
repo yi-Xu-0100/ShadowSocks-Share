@@ -5,10 +5,7 @@ import com.example.ShadowSocksShare.domain.ShadowSocksEntity;
 import com.example.ShadowSocksShare.service.ShadowSocksCrawlerService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
-import com.gargoylesoftware.htmlunit.Page;
-import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.*;
 import com.gargoylesoftware.htmlunit.html.DomElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import lombok.Getter;
@@ -45,8 +42,9 @@ public class Free_ssServiceImpl extends ShadowSocksCrawlerService {
 	public ShadowSocksEntity getShadowSocks() {
 		try (WebClient webClient = new WebClient(BrowserVersion.CHROME)) {
 			// 设置代理
-			/*if (proxyEnable)
-				webClient.getOptions().setProxyConfig(new ProxyConfig(proxyHost, proxyPort));*/
+			// if (proxyEnable)
+			// http://spys.one/en/http-proxy-list/
+			webClient.getOptions().setProxyConfig(new ProxyConfig("61.155.164.106", 3128));
 			// 1. 爬取账号
 			webClient.getOptions().setJavaScriptEnabled(true);                // 启动JS
 			webClient.setJavaScriptTimeout(10 * 1000);                            // 设置JS执行的超时时间
