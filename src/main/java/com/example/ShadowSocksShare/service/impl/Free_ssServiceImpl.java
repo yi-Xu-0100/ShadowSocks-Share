@@ -91,7 +91,7 @@ public class Free_ssServiceImpl extends ShadowSocksCrawlerService {
 						ss.setValid(false);
 						ss.setValidTime(new Date());
 						ss.setTitle("free-ss.site");
-						ss.setRemarks("https://free-ss.site/");
+						ss.setRemarks("free-ss.site");
 						ss.setGroup("ShadowSocks-Share");
 
 						// 测试网络
@@ -106,7 +106,7 @@ public class Free_ssServiceImpl extends ShadowSocksCrawlerService {
 				}
 
 				// 3. 生成 ShadowSocksEntity
-				ShadowSocksEntity entity = new ShadowSocksEntity("free-ss.site", "free-ss.site", true, new Date());
+				ShadowSocksEntity entity = new ShadowSocksEntity("https://free-ss.site/", "free-ss.site", true, new Date());
 				entity.setShadowSocksSet(set);
 				return entity;
 			}
