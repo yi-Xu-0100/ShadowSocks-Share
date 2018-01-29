@@ -1,5 +1,4 @@
 # 欢迎访问本项目!
-===================
 
 示例站点：https://shadowsocks-share.herokuapp.com   
 
@@ -64,4 +63,4 @@ ShadowSocksShare-OpenShift [Heroku 部署方法](https://github.com/the0demiurge
 ## TO DO
 
 1. 计划支持下列站点：
-    1. https://plus.google.com/communities/104092405342699579599
+    1. https://github.com/max2max/freess/wiki/%E5%85%8D%E8%B4%B9ss%E8%B4%A6%E5%8F%B7
